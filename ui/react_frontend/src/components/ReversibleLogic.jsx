@@ -1,10 +1,19 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.15 } }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 120 } }
+};
+
 const ReversibleLogic = ({ logicData, control, setControl, target, setTarget }) => {
   return (
-    <div className="max-w-5xl mx-auto mt-6 space-y-8 pb-12">
-    <div className="max-w-5xl mx-auto mt-6 space-y-8 pb-12">
+    <motion.div variants={containerVariants} initial="hidden" animate="show" className="max-w-5xl mx-auto mt-6 space-y-8 pb-12">
       <div className="p-10 bento-glass-card border-cyan-500/50 group">
         <div className="absolute top-[-50px] left-[-50px] w-64 h-64 bg-cyan-600/10 rounded-full blur-[80px] group-hover:bg-cyan-500/20 transition-all duration-700 pointer-events-none"></div>
         <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-10 text-center uppercase tracking-widest relative z-10 drop-shadow-[0_0_15px_rgba(0,243,255,0.5)]">Física Cuántica (CNOT)</h2>
@@ -27,7 +36,20 @@ const ReversibleLogic = ({ logicData, control, setControl, target, setTarget }) 
             </div>
           </div>
 
-          <div className="flex justify-center relative">
+          <div className="flex justify-center relative w-full h-full min-h-[160px] items-center">
+            {/* Bit Entrante Control */}
+            <motion.div
+              animate={{ x: [ -80, 0, 0, 80 ], opacity: [ 0, 1, 1, 0 ], scale: [0.5, 1, 1, 1] }}
+              transition={{ repeat: Infinity, duration: 3, times: [0, 0.3, 0.7, 1] }}
+              className="absolute left-[-20px] top-4 w-6 h-6 bg-cyan-400 rounded-full shadow-[0_0_10px_rgba(34,211,238,1)] z-0"
+            />
+            {/* Bit Entrante Objetivo */}
+            <motion.div
+              animate={{ x: [ -80, 0, 0, 80 ], opacity: [ 0, 1, 1, 0 ], scale: [0.5, 1, 1, 1] }}
+              transition={{ repeat: Infinity, duration: 3, times: [0, 0.3, 0.7, 1] }}
+              className="absolute left-[-20px] bottom-4 w-6 h-6 bg-purple-400 rounded-full shadow-[0_0_10px_rgba(168,85,247,1)] z-0"
+            />
+
             <motion.div 
               animate={{ boxShadow: ['0 0 20px rgba(34,211,238,0.4)', '0 0 40px rgba(34,211,238,0.8)', '0 0 20px rgba(34,211,238,0.4)'], scale: [1, 1.05, 1] }}
               transition={{ repeat: Infinity, duration: 2 }}
@@ -56,10 +78,7 @@ const ReversibleLogic = ({ logicData, control, setControl, target, setTarget }) 
       </div>
 
       {/* Teoría y Ejemplo Práctico */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-        className="bento-glass-card p-10 border-cyan-500/30 group"
-      >
+      <motion.div variants={itemVariants} className="bento-glass-card p-10 border-cyan-500/30 group">
         <div className="absolute top-[-50px] right-[-50px] w-64 h-64 bg-cyan-600/10 rounded-full blur-[80px] group-hover:bg-cyan-500/20 transition-all duration-700 pointer-events-none"></div>
         <h3 className="text-3xl font-black text-cyan-400 mb-8 flex items-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">
           <span className="text-4xl">🔄</span> Conservación de Información
@@ -67,32 +86,32 @@ const ReversibleLogic = ({ logicData, control, setControl, target, setTarget }) 
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
           <ul className="text-gray-300 space-y-5 text-lg font-medium">
-            <li className="flex gap-4 items-start"><span className="text-cyan-400 font-bold text-2xl">»</span> <p><strong>Mapeo Biunívoco:</strong> Entran 2 bits, salen 2 bits. La operación matemática es 100% reversible.</p></li>
-            <li className="flex gap-4 items-start"><span className="text-cyan-400 font-bold text-2xl">»</span> <p><strong>Fricción Cero:</strong> Al no haber destrucción de datos, evitamos el límite de Landauer. No hay disipación de calor.</p></li>
-            <li className="flex gap-4 items-start"><span className="text-cyan-400 font-bold text-2xl">»</span> <p><strong>Viaje en el Tiempo:</strong> Puedes ejecutar el circuito hacia atrás y recuperar el estado original intacto.</p></li>
+            <motion.li variants={itemVariants} className="flex gap-4 items-start"><span className="text-cyan-400 font-bold text-2xl">»</span> <p><strong>Mapeo 1 a 1:</strong> Entran 2 bits, salen 2 bits. No se pierde absolutamente nada.</p></motion.li>
+            <motion.li variants={itemVariants} className="flex gap-4 items-start"><span className="text-cyan-400 font-bold text-2xl">»</span> <p><strong>Cero Fricción:</strong> Evadimos el límite de Landauer. Es energía 100% eficiente.</p></motion.li>
+            <motion.li variants={itemVariants} className="flex gap-4 items-start"><span className="text-cyan-400 font-bold text-2xl">»</span> <p><strong>Viaje Temporal Matemático:</strong> Aplicar CNOT al revés restaura el origen perfecto.</p></motion.li>
           </ul>
 
           <div className="space-y-6">
-            <div className="bg-cyan-950/30 border border-cyan-500/50 p-6 rounded-2xl shadow-[inset_0_0_30px_rgba(0,243,255,0.1)] group-hover:shadow-[0_0_30px_rgba(0,243,255,0.15)] transition-all">
+            <motion.div variants={itemVariants} className="bg-cyan-950/30 border border-cyan-500/50 p-6 rounded-2xl shadow-[inset_0_0_30px_rgba(0,243,255,0.1)] group-hover:shadow-[0_0_30px_rgba(0,243,255,0.15)] transition-all">
               <h4 className="text-cyan-300 font-bold mb-3 flex items-center gap-2 text-sm uppercase tracking-widest">
                 <span className="text-xl">🔑</span> Criptografía Cuántica Perfecta
               </h4>
               <p className="text-sm text-gray-400 leading-relaxed">
-                Usa CNOT como candado impenetrable. El mensaje es el "Objetivo", la clave el "Control". Aplica CNOT y obtienes texto cifrado. Aplícalo de nuevo con la misma clave y recuperarás el mensaje intacto.
+                Usa CNOT como candado. Cifra el mensaje aplicando la clave. Aplica la misma clave otra vez, y gracias a la reversibilidad matemática, recuperarás el mensaje.
               </p>
-            </div>
+            </motion.div>
             
-            <div className="bg-purple-950/40 border border-purple-500/50 p-5 rounded-xl flex items-center justify-between shadow-[0_0_20px_rgba(168,85,247,0.15)] overflow-hidden relative">
+            <motion.div variants={itemVariants} className="bg-purple-950/40 border border-purple-500/50 p-5 rounded-xl flex items-center justify-between shadow-[0_0_20px_rgba(168,85,247,0.15)] overflow-hidden relative">
               <div className="absolute top-0 left-0 w-1 h-full bg-purple-400"></div>
               <span className="text-xs uppercase text-purple-400 tracking-widest pl-2">Propiedad Inversa</span>
               <p className="font-mono text-xl font-bold text-white glow-text-purple">
                 CNOT(CNOT(x)) = x
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 

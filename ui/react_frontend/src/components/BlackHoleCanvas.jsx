@@ -73,6 +73,16 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
     const particleTexture = createSoftParticleTexture();
     const quantumGlowTexture = createHighGlowQuantumTexture();
 
+    let innerColor = 0xc084fc;
+    let outerColor = 0x00f3ff;
+    if (etapa === 'Entrada') {
+      innerColor = 0x2563eb; // blue-600
+      outerColor = 0x60a5fa; // blue-400
+    } else if (etapa === 'Radiación') {
+      innerColor = 0xea580c; // orange-600
+      outerColor = 0xfacc15; // yellow-400
+    }
+
     // 1. Singularidad
     const singularity = new THREE.Mesh(
       new THREE.SphereGeometry(9.5, 64, 64),
@@ -82,25 +92,25 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
 
     scene.add(new THREE.Mesh(
       new THREE.SphereGeometry(10.0, 64, 64),
-      new THREE.MeshBasicMaterial({ color: 0xc084fc, transparent: true, opacity: 0.5, side: THREE.BackSide, blending: THREE.AdditiveBlending })
+      new THREE.MeshBasicMaterial({ color: innerColor, transparent: true, opacity: 0.5, side: THREE.BackSide, blending: THREE.AdditiveBlending })
     ));
 
     scene.add(new THREE.Mesh(
       new THREE.SphereGeometry(10.7, 64, 64),
-      new THREE.MeshBasicMaterial({ color: 0x00f3ff, transparent: true, opacity: 0.35, side: THREE.BackSide, blending: THREE.AdditiveBlending })
+      new THREE.MeshBasicMaterial({ color: outerColor, transparent: true, opacity: 0.35, side: THREE.BackSide, blending: THREE.AdditiveBlending })
     ));
 
     // 2. Anillos Fotónicos
     const photonRing1 = new THREE.Mesh(
       new THREE.RingGeometry(9.8, 11.6, 64),
-      new THREE.MeshBasicMaterial({ color: 0x00f3ff, side: THREE.DoubleSide, transparent: true, opacity: 0.98, blending: THREE.AdditiveBlending })
+      new THREE.MeshBasicMaterial({ color: outerColor, side: THREE.DoubleSide, transparent: true, opacity: 0.98, blending: THREE.AdditiveBlending })
     );
     photonRing1.rotation.x = Math.PI / 2;
     scene.add(photonRing1);
 
     const photonRing2 = new THREE.Mesh(
       new THREE.RingGeometry(11.7, 13.2, 64),
-      new THREE.MeshBasicMaterial({ color: 0xc084fc, side: THREE.DoubleSide, transparent: true, opacity: 0.78, blending: THREE.AdditiveBlending })
+      new THREE.MeshBasicMaterial({ color: innerColor, side: THREE.DoubleSide, transparent: true, opacity: 0.78, blending: THREE.AdditiveBlending })
     );
     photonRing2.rotation.x = Math.PI / 2;
     scene.add(photonRing2);
@@ -126,9 +136,15 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
 
         const normR = (r - 10.5) / 52.0;
         const color = new THREE.Color();
-        if (normR < 0.22) color.setHSL(0.53 - normR * 0.08, 1.0, 0.88);
-        else if (normR < 0.62) color.setHSL(0.72 + normR * 0.06, 0.95, 0.68);
-        else color.setHSL(0.78, 0.9, 0.45);
+        if (etapa === 'Entrada') {
+            color.setHSL(0.55 - normR * 0.05, 0.9, 0.7); // Shades of blue
+        } else if (etapa === 'Radiación') {
+            color.setHSL(0.1 - normR * 0.08, 1.0, 0.6); // Shades of orange/red
+        } else {
+            if (normR < 0.22) color.setHSL(0.53 - normR * 0.08, 1.0, 0.88);
+            else if (normR < 0.62) color.setHSL(0.72 + normR * 0.06, 0.95, 0.68);
+            else color.setHSL(0.78, 0.9, 0.45);
+        }
         
         diskColors[i * 3] = color.r;
         diskColors[i * 3 + 1] = color.g;

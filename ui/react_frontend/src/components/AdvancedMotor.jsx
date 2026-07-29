@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import BlackHoleCanvas from './BlackHoleCanvas';
 
 const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
+  const [userPhase, setUserPhase] = useState('Distribución');
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
       
@@ -95,14 +96,21 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
       </div>
 
       {/* Visualización 3D (Columna Derecha x2) */}
-      <div className="lg:col-span-2">
+      <div className="lg:col-span-2 flex flex-col gap-4">
+        {/* Phase Controls */}
+        <div className="bento-glass-card p-4 flex flex-wrap gap-4 justify-center items-center border-white/10">
+          <span className="text-gray-400 font-bold uppercase tracking-widest text-sm">Control de Fase:</span>
+          <button onClick={() => setUserPhase('Entrada')} className={`px-4 py-2 rounded-xl font-bold transition-all ${userPhase === 'Entrada' ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.8)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>1. Entrada</button>
+          <button onClick={() => setUserPhase('Distribución')} className={`px-4 py-2 rounded-xl font-bold transition-all ${userPhase === 'Distribución' ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.8)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>2. Scrambling</button>
+          <button onClick={() => setUserPhase('Radiación')} className={`px-4 py-2 rounded-xl font-bold transition-all ${userPhase === 'Radiación' ? 'bg-orange-600 text-white shadow-[0_0_15px_rgba(234,88,12,0.8)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>3. Radiación</button>
+        </div>
+
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
           className="relative w-full rounded-3xl overflow-hidden shadow-2xl"
         >
-          {/* Re-utilizamos el estado de distribución para que haya partículas moviéndose, controlando la etapa desde theta/phi si se desea, o lo dejamos en Radiación para ver la entropía máxima */}
           <BlackHoleCanvas 
-            etapa="Radiación" 
+            etapa={userPhase} 
             theta={theta} 
             phi={phi} 
             entropia={quantumData?.distribucion?.entropia ?? 0.6931} 

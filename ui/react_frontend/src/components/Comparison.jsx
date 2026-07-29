@@ -1,12 +1,28 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 120 } }
+};
+
 const Comparison = () => {
   return (
-    <div className="max-w-6xl mx-auto mt-10">
-      <h2 className="text-5xl font-black text-center mb-12 tracking-widest uppercase">
+    <motion.div 
+      variants={containerVariants} initial="hidden" animate="show"
+      className="max-w-6xl mx-auto mt-10"
+    >
+      <motion.h2 variants={itemVariants} className="text-5xl font-black text-center mb-12 tracking-widest uppercase">
         <span className="glow-text-purple">Comparación Final</span>
-      </h2>
+      </motion.h2>
 
       {/* Tabla Comparativa Robusta */}
       <div className="bento-glass-card overflow-x-auto mb-12 relative p-1 group">
@@ -51,7 +67,7 @@ const Comparison = () => {
 
       {/* Conclusiones Finales */}
       <motion.div 
-        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+        variants={itemVariants}
         className="bento-glass-card p-8 lg:p-12 text-center relative overflow-hidden group border-purple-500/40"
       >
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none group-hover:bg-purple-500/20 transition-all duration-700"></div>
@@ -65,18 +81,18 @@ const Comparison = () => {
               <span className="text-lg">🎮</span> Industria de Videojuegos
             </h4>
             <ul className="text-gray-300 text-sm space-y-2">
-              <li className="flex gap-2"><span className="text-cyan-500">»</span> <strong>Físicas Ultrarrealistas:</strong> Modelar colisiones y fluidos sin perder datos (Lógica Reversible).</li>
-              <li className="flex gap-2"><span className="text-cyan-500">»</span> <strong>Viaje en el Tiempo Lógico:</strong> Rebobinar el estado del juego (Braid, Forza) con 100% de precisión y costo computacional nulo.</li>
+              <motion.li variants={itemVariants} className="flex gap-2"><span className="text-cyan-500">»</span> <p><strong>Físicas Ultrarrealistas:</strong> Modelar colisiones y fluidos sin destruir datos subyacentes.</p></motion.li>
+              <motion.li variants={itemVariants} className="flex gap-2"><span className="text-cyan-500">»</span> <p><strong>Viaje en el Tiempo:</strong> Rebobinar juegos (ej. Braid) con coste computacional y térmico casi nulo.</p></motion.li>
             </ul>
           </div>
           
           <div className="bg-purple-950/20 p-6 rounded-2xl border border-purple-500/30 hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-all">
             <h4 className="text-purple-400 font-bold mb-3 flex items-center gap-2 uppercase tracking-widest text-sm">
-              <span className="text-lg">⚙️</span> Algoritmos de Optimización
+              <span className="text-lg">⚙️</span> Eficiencia y Algoritmos
             </h4>
             <ul className="text-gray-300 text-sm space-y-2">
-              <li className="flex gap-2"><span className="text-purple-500">»</span> <strong>Búsqueda Cuántica:</strong> Algoritmos como Grover exploran datos exponencialmente más rápido aprovechando la superposición.</li>
-              <li className="flex gap-2"><span className="text-purple-500">»</span> <strong>Eficiencia Térmica:</strong> Los futuros centros de datos usarán CNOTs lógicas para no fundirse (Hardware Reversible).</li>
+              <motion.li variants={itemVariants} className="flex gap-2"><span className="text-purple-500">»</span> <p><strong>Búsqueda Cuántica:</strong> Explorar datos exponencialmente más rápido aprovechando la superposición.</p></motion.li>
+              <motion.li variants={itemVariants} className="flex gap-2"><span className="text-purple-500">»</span> <p><strong>Data Centers Fríos:</strong> Usar hardware reversible para reducir drásticamente el consumo eléctrico y el calor.</p></motion.li>
             </ul>
           </div>
         </div>
@@ -86,7 +102,7 @@ const Comparison = () => {
           <span className="text-xl font-bold text-white tracking-widest uppercase">Demostración Finalizada</span>
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 
