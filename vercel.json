@@ -1,15 +1,10 @@
 {
-  "buildCommand": "cd ui/react_frontend && npm install && npm run build",
+  "buildCommand": "cd ui/react_frontend && npm install && npm run build && rm -rf node_modules",
   "outputDirectory": "ui/react_frontend/build",
   "rewrites": [
     {
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ],
-  "functions": {
-    "api/**/*.py": {
-      "excludeFiles": "{ui,assets,tests,.streamlit,README.md}/**"
-    }
-  }
+  ]
 }
