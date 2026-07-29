@@ -4,32 +4,57 @@ import { motion, AnimatePresence } from 'framer-motion';
 const slides = [
   {
     title: "El Destino de la Información",
-    subtitle: "Proyecto de Lógica Computacional y Cuántica",
-    content: "Bienvenido a este viaje interactivo. Exploraremos qué sucede con la información a nivel lógico y físico, desde el sobrecalentamiento de tu procesador hasta los misteriosos Agujeros Negros del universo.",
+    subtitle: "Lógica Clásica vs. Computación Cuántica",
+    content: (
+      <ul className="text-left space-y-3 max-w-xl mx-auto list-none">
+        <li className="flex items-start gap-3"><span className="text-cyan-400">⚡</span> Exploración interactiva del flujo de información.</li>
+        <li className="flex items-start gap-3"><span className="text-cyan-400">⚡</span> Del sobrecalentamiento del procesador a los Agujeros Negros.</li>
+      </ul>
+    ),
     icon: "🌌"
   },
   {
     title: "1. El Problema: Lógica Clásica",
     subtitle: "Irreversibilidad y Calor",
-    content: "Las computadoras actuales se basan en compuertas irreversibles (como AND). Al procesar datos, destruyen bits. Esta pérdida de información se convierte inevitablemente en calor (Principio de Landauer).",
+    content: (
+      <ul className="text-left space-y-3 max-w-xl mx-auto list-none">
+        <li className="flex items-start gap-3"><span className="text-red-400">🔥</span> <strong>Compuertas Irreversibles (AND):</strong> Destruyen bits al procesar.</li>
+        <li className="flex items-start gap-3"><span className="text-red-400">🔥</span> <strong>Principio de Landauer:</strong> La información perdida se disipa como calor.</li>
+      </ul>
+    ),
     icon: "🔥"
   },
   {
     title: "2. La Solución: Lógica Reversible",
     subtitle: "Conservación Total",
-    content: "Para evitar el calor y preservar la información, necesitamos operaciones donde los bits de entrada sean iguales en cantidad a los de salida (como CNOT). ¡Si no borras nada, puedes retroceder en el tiempo computacional!",
+    content: (
+      <ul className="text-left space-y-3 max-w-xl mx-auto list-none">
+        <li className="flex items-start gap-3"><span className="text-green-400">🔄</span> <strong>Operaciones Biyectivas (CNOT):</strong> Entradas = Salidas. Ningún bit se borra.</li>
+        <li className="flex items-start gap-3"><span className="text-green-400">🔄</span> <strong>Cómputo Frío:</strong> Al no perder datos, teóricamente no se genera calor límite.</li>
+      </ul>
+    ),
     icon: "🔄"
   },
   {
     title: "3. El Último Límite: Mecánica Cuántica",
     subtitle: "Entrelazamiento y Superposición",
-    content: "La información en un cúbit puede existir en múltiples estados a la vez. Cuando se entrelaza, se distribuye por el sistema de forma no local. Esto nos permite simular fenómenos cósmicos.",
+    content: (
+      <ul className="text-left space-y-3 max-w-xl mx-auto list-none">
+        <li className="flex items-start gap-3"><span className="text-purple-400">⚛️</span> <strong>Superposición:</strong> Múltiples estados simultáneos.</li>
+        <li className="flex items-start gap-3"><span className="text-purple-400">⚛️</span> <strong>Entrelazamiento:</strong> La información se distribuye globalmente sin destruirse.</li>
+      </ul>
+    ),
     icon: "⚛️"
   },
   {
     title: "4. Simulador Avanzado (Qiskit)",
-    subtitle: "Agujeros Negros en la Nube",
-    content: "Utilizamos matemática tensorial para modelar cómo un Agujero Negro absorbe (distribuye) y luego emite (Hawking) información cuántica. ¡Demostramos que la Fidelidad es del 100%, resolviendo la paradoja de la información!",
+    subtitle: "Paradoja de Hawking Resuelta",
+    content: (
+      <ul className="text-left space-y-3 max-w-xl mx-auto list-none">
+        <li className="flex items-start gap-3"><span className="text-cyan-400">🚀</span> <strong>Agujeros Negros simulados:</strong> La información absorbida se mezcla (Scrambling).</li>
+        <li className="flex items-start gap-3"><span className="text-cyan-400">🚀</span> <strong>Recuperación 100%:</strong> La radiación de Hawking preserva y devuelve la información (Fidelidad total).</li>
+      </ul>
+    ),
     icon: "🚀"
   }
 ];
@@ -70,9 +95,9 @@ const PresentationMode = () => {
             {slides[current].subtitle}
           </h2>
           
-          <p className="text-gray-300 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto min-h-[120px]">
+          <div className="text-gray-300 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto min-h-[140px] flex items-center justify-center">
             {slides[current].content}
-          </p>
+          </div>
         </motion.div>
       </AnimatePresence>
 

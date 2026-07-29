@@ -53,23 +53,31 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#010207] text-white flex flex-col font-sans">
-      <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
-      
-      <main className="flex-1 container mx-auto px-4 py-8">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 20, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.98 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="w-full h-full"
-          >
-            {renderTab()}
-          </motion.div>
-        </AnimatePresence>
-      </main>
+    <div className="min-h-screen bg-[#02040a] text-white flex flex-col font-sans relative overflow-hidden">
+      {/* Sci-Fi Grid Background */}
+      <div className="absolute inset-0 pointer-events-none opacity-20 z-0" 
+           style={{ backgroundImage: 'linear-gradient(#22d3ee 1px, transparent 1px), linear-gradient(90deg, #22d3ee 1px, transparent 1px)', backgroundSize: '40px 40px', transform: 'perspective(500px) rotateX(60deg) scale(2.5) translateY(-50px)' }}>
+      </div>
+      <div className="absolute inset-0 pointer-events-none z-0 bg-gradient-to-t from-[#02040a] via-transparent to-[#02040a]"></div>
+
+      <div className="relative z-10 flex flex-col h-full">
+        <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
+        
+        <main className="flex-1 container mx-auto px-4 py-8">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -30, scale: 0.95 }}
+              transition={{ duration: 0.5, type: "spring", bounce: 0.4 }}
+              className="w-full h-full"
+            >
+              {renderTab()}
+            </motion.div>
+          </AnimatePresence>
+        </main>
+      </div>
     </div>
   );
 }

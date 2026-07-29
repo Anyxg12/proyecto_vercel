@@ -10,9 +10,10 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
       <div className="lg:col-span-1 space-y-6">
         <motion.div 
           initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-          className="bg-[#060a1a]/80 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-6 shadow-xl"
+          className="bg-[#02040a]/80 backdrop-blur-2xl border border-purple-500/40 rounded-3xl p-6 shadow-[0_0_30px_rgba(168,85,247,0.15)] relative overflow-hidden group"
         >
-          <h3 className="text-xl font-bold text-white mb-6">Controles Cuánticos (Qiskit)</h3>
+          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl group-hover:bg-purple-500/20 transition-all pointer-events-none"></div>
+          <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-magenta-500 mb-6 uppercase tracking-widest relative z-10">Parámetros (Qiskit)</h3>
           
           <div className="mb-6">
             <div className="flex justify-between text-sm mb-2">
@@ -40,51 +41,53 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
         </motion.div>
 
         {/* Real-time Metrics Card (4 Etapas) */}
+        {/* Real-time Metrics Card (4 Etapas) */}
         <motion.div 
           initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
-          className="bg-[#060a1a]/80 backdrop-blur-xl border border-cyan-500/30 rounded-3xl p-6 shadow-xl"
+          className="bg-[#02040a]/80 backdrop-blur-2xl border border-cyan-500/40 rounded-3xl p-6 shadow-[0_0_30px_rgba(34,211,238,0.15)] relative overflow-hidden group"
         >
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-bold text-white">Flujo de Información</h3>
-            <div className="bg-green-500/20 px-3 py-1 rounded-full border border-green-500/50">
-              <span className="text-xs text-green-400 font-bold">Fidelidad: {quantumData ? (quantumData.fidelidad * 100).toFixed(2) : '100.00'}%</span>
+          <div className="absolute top-0 left-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-all pointer-events-none"></div>
+          <div className="flex justify-between items-center mb-6 relative z-10">
+            <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 uppercase tracking-widest">Flujo de Datos</h3>
+            <div className="bg-green-950/40 px-3 py-1 rounded-full border border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.3)]">
+              <span className="text-xs text-green-400 font-bold uppercase tracking-wider">Fidelidad: {quantumData ? (quantumData.fidelidad * 100).toFixed(2) : '100.00'}%</span>
             </div>
           </div>
           
-          <div className="space-y-4">
+          <div className="space-y-4 relative z-10">
              {/* Etapa 1 */}
-             <div className="bg-white/5 p-3 rounded-xl border border-white/10 hover:border-purple-500/50 transition-colors">
-                <span className="text-xs text-purple-400 font-bold uppercase tracking-wider mb-1 block">1. Momento de Entrada</span>
+             <div className="bg-purple-950/20 p-3 rounded-xl border border-purple-500/30 hover:border-purple-400 hover:shadow-[0_0_15px_rgba(168,85,247,0.2)] transition-all">
+                <span className="text-[10px] text-purple-400 font-bold uppercase tracking-widest mb-1 block">1. Entrada</span>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Entropía: <span className="text-white font-mono">{quantumData?.entrada?.entropia.toFixed(4) ?? '0.0000'}</span></span>
-                  <span className="text-gray-400">Pureza: <span className="text-white font-mono">{quantumData?.entrada?.pureza.toFixed(4) ?? '1.0000'}</span></span>
+                  <span className="text-gray-400">Entropía: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.entrada?.entropia.toFixed(4) ?? '0.0000'}</span></span>
+                  <span className="text-gray-400">Pureza: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.entrada?.pureza.toFixed(4) ?? '1.0000'}</span></span>
                 </div>
              </div>
              
              {/* Etapa 2 */}
-             <div className="bg-white/5 p-3 rounded-xl border border-white/10 hover:border-cyan-500/50 transition-colors">
-                <span className="text-xs text-cyan-400 font-bold uppercase tracking-wider mb-1 block">2. Distribución (Agujero Negro)</span>
+             <div className="bg-cyan-950/20 p-3 rounded-xl border border-cyan-500/30 hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all">
+                <span className="text-[10px] text-cyan-400 font-bold uppercase tracking-widest mb-1 block">2. Distribución (Agujero Negro)</span>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Entropía: <span className="text-white font-mono">{quantumData?.distribucion?.entropia.toFixed(4) ?? '0.6931'}</span></span>
-                  <span className="text-gray-400">Pureza: <span className="text-white font-mono">{quantumData?.distribucion?.pureza.toFixed(4) ?? '0.5000'}</span></span>
+                  <span className="text-gray-400">Entropía: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.distribucion?.entropia.toFixed(4) ?? '0.6931'}</span></span>
+                  <span className="text-gray-400">Pureza: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.distribucion?.pureza.toFixed(4) ?? '0.5000'}</span></span>
                 </div>
              </div>
 
              {/* Etapa 3 */}
-             <div className="bg-white/5 p-3 rounded-xl border border-white/10 hover:border-orange-500/50 transition-colors">
-                <span className="text-xs text-orange-400 font-bold uppercase tracking-wider mb-1 block">3. Emisión de Radiación (Hawking)</span>
+             <div className="bg-orange-950/20 p-3 rounded-xl border border-orange-500/30 hover:border-orange-400 hover:shadow-[0_0_15px_rgba(249,115,22,0.2)] transition-all">
+                <span className="text-[10px] text-orange-400 font-bold uppercase tracking-widest mb-1 block">3. Emisión (Hawking)</span>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Entropía: <span className="text-white font-mono">{quantumData?.radiacion?.entropia.toFixed(4) ?? '0.6931'}</span></span>
-                  <span className="text-gray-400">Pureza: <span className="text-white font-mono">{quantumData?.radiacion?.pureza.toFixed(4) ?? '0.5000'}</span></span>
+                  <span className="text-gray-400">Entropía: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.radiacion?.entropia.toFixed(4) ?? '0.6931'}</span></span>
+                  <span className="text-gray-400">Pureza: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.radiacion?.pureza.toFixed(4) ?? '0.5000'}</span></span>
                 </div>
              </div>
 
              {/* Etapa 4 */}
-             <div className="bg-white/5 p-3 rounded-xl border border-white/10 hover:border-green-500/50 transition-colors">
-                <span className="text-xs text-green-400 font-bold uppercase tracking-wider mb-1 block">4. Estado Final (Recuperado)</span>
+             <div className="bg-green-950/20 p-3 rounded-xl border border-green-500/30 hover:border-green-400 hover:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all">
+                <span className="text-[10px] text-green-400 font-bold uppercase tracking-widest mb-1 block">4. Final (Recuperado)</span>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Entropía: <span className="text-white font-mono">{quantumData?.salida?.entropia.toFixed(4) ?? '0.0000'}</span></span>
-                  <span className="text-gray-400">Pureza: <span className="text-white font-mono">{quantumData?.salida?.pureza.toFixed(4) ?? '1.0000'}</span></span>
+                  <span className="text-gray-400">Entropía: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.salida?.entropia.toFixed(4) ?? '0.0000'}</span></span>
+                  <span className="text-gray-400">Pureza: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.salida?.pureza.toFixed(4) ?? '1.0000'}</span></span>
                 </div>
              </div>
           </div>
@@ -113,28 +116,24 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
       <div className="lg:col-span-3 mt-4">
         <motion.div 
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-          className="bg-black/40 border border-white/5 rounded-3xl p-8"
+          className="bg-[#02040a]/60 border border-orange-500/30 rounded-3xl p-8 shadow-[inset_0_0_30px_rgba(249,115,22,0.1)] relative overflow-hidden"
         >
-          <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500 mb-4 flex items-center gap-2">
-            <span>🌌</span> La Paradoja de la Información
+          <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500 mb-6 flex items-center gap-3 uppercase tracking-widest relative z-10">
+            <span className="text-3xl">🌌</span> Paradoja de la Información
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-300 leading-relaxed">
-            <div>
-              <p className="mb-4">
-                Stephen Hawking propuso que los Agujeros Negros emiten radiación térmica y eventualmente se evaporan. 
-                Si un objeto cae en un Agujero Negro y este desaparece... ¿qué pasa con la información de ese objeto?
-              </p>
-              <p>
-                Este simulador usa <strong>Qiskit</strong> (matemática tensorial en nuestro backend) para modelar el Agujero Negro como un circuito cuántico de "Scrambling" (mezcla extrema).
-              </p>
-            </div>
-            <div className="bg-white/5 p-5 rounded-2xl border border-white/10 text-sm">
-              <h4 className="font-bold text-white mb-2">Lectura de las Métricas</h4>
-              <ul className="space-y-2">
-                <li><strong className="text-purple-400">1. Entrada:</strong> Información pura (Entropía 0, Pureza 1).</li>
-                <li><strong className="text-cyan-400">2. Distribución:</strong> El agujero negro mezcla la información (Entropía máxima).</li>
-                <li><strong className="text-orange-400">3. Emisión:</strong> Radiación de Hawking emerge entrelazada con el interior.</li>
-                <li><strong className="text-green-400">4. Estado Final:</strong> ¡La información se recupera! Fidelidad del 100%, resolviendo la paradoja gracias a la Mecánica Cuántica.</li>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-300 relative z-10">
+            <ul className="space-y-4">
+              <li className="flex gap-3"><span className="text-orange-500 font-bold">»</span> <strong>El Dilema de Hawking:</strong> Si un agujero negro se evapora emitiendo radiación térmica, la información de lo que cayó dentro parece destruirse (violando la mecánica cuántica).</li>
+              <li className="flex gap-3"><span className="text-orange-500 font-bold">»</span> <strong>La Solución Tensorial:</strong> Modelamos el agujero negro en Qiskit como un circuito de mezcla extrema ("Scrambling").</li>
+              <li className="flex gap-3"><span className="text-orange-500 font-bold">»</span> <strong>El Resultado:</strong> La información no se pierde, se entrelaza con la radiación emergente, permitiendo su recuperación 100% fiel.</li>
+            </ul>
+            <div className="bg-orange-950/20 p-6 rounded-2xl border border-orange-500/30 text-sm shadow-[0_0_20px_rgba(249,115,22,0.1)]">
+              <h4 className="font-bold text-orange-400 mb-4 uppercase tracking-widest">Decodificando las Métricas</h4>
+              <ul className="space-y-3">
+                <li className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-purple-500 shadow-[0_0_5px_#a855f7]"></span> <strong>Entrada:</strong> Datos vírgenes (Entropía 0, Pureza 1).</li>
+                <li className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-cyan-500 shadow-[0_0_5px_#06b6d4]"></span> <strong>Distribución:</strong> Máximo caos aparente (Entropía máxima).</li>
+                <li className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-orange-500 shadow-[0_0_5px_#f97316]"></span> <strong>Emisión:</strong> Radiación de Hawking (sigue entrelazada).</li>
+                <li className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_5px_#22c55e]"></span> <strong>Final:</strong> Datos recuperados intactos (Fidelidad 100%).</li>
               </ul>
             </div>
           </div>
