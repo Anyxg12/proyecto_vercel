@@ -6,13 +6,23 @@ import GlowButton from './GlowButton';
 import SpotlightCard from './ui/spotlight-card';
 import BorderBeam from './ui/border-beam';
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 120 } }
+};
+
 const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
   const [userPhase, setUserPhase] = useState('Distribución');
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6 items-start">
+    <motion.div variants={containerVariants} initial="hidden" animate="show" className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6 items-start">
       
       {/* Controles y Métricas (Columna Izquierda) */}
-      <div className="lg:col-span-1 space-y-6">
+      <motion.div variants={itemVariants} className="lg:col-span-1 space-y-6">
         <SpotlightCard color="rgba(168,85,247,0.2)" className="p-6">
           <BorderBeam colorFrom="#a855f7" colorTo="#d946ef" duration={10} />
           <AnimatedTitle text="Parámetros (Qiskit)" type="word" className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-magenta-500 mb-6 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)] w-full" />
@@ -90,9 +100,9 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
              </div>
            </div>
         </SpotlightCard>
-      </div>
+      </motion.div>
 
-      <div className="lg:col-span-2 flex flex-col gap-4">
+      <motion.div variants={itemVariants} className="lg:col-span-2 flex flex-col gap-4">
         {/* Phase Controls */}
         <SpotlightCard color="rgba(34,211,238,0.2)" className="p-4 flex flex-wrap gap-4 justify-center items-center">
           <BorderBeam colorFrom="#06b6d4" colorTo="#a855f7" duration={14} />
@@ -118,10 +128,10 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
             fidelidad={quantumData?.fidelidad ?? 1.0} 
           />
         </motion.div>
-      </div>
+      </motion.div>
       
       {/* Explicación Teórica del Agujero Negro */}
-      <div className="lg:col-span-3 mt-4">
+      <motion.div variants={itemVariants} className="lg:col-span-3 mt-4">
         <SpotlightCard color="rgba(249,115,22,0.2)" className="p-10">
           <BorderBeam colorFrom="#f97316" colorTo="#ef4444" duration={15} />
           <AnimatedTitle text="Paradoja de la Información" type="word" className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500 mb-8 flex items-center justify-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)] w-full" />
@@ -142,9 +152,9 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
             </div>
           </div>
         </SpotlightCard>
-      </div>
+      </motion.div>
 
-    </div>
+    </motion.div>
   );
 };
 

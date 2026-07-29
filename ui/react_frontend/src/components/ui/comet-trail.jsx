@@ -48,7 +48,7 @@ const CometTrail = () => {
           translateY: "-50%",
           opacity: isVisible ? 1 : 0,
         }}
-        className="fixed top-0 left-0 w-12 h-12 rounded-full border border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-opacity duration-300"
+        className="fixed top-0 left-0 w-12 h-12 rounded-full border border-cyan-500/30 bg-cyan-500/10 shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-opacity duration-300"
       />
       
       {/* Núcleo principal (Punto rápido brillante) */}
