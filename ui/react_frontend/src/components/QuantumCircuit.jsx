@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import AnimatedTitle from './AnimatedTitle';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -16,9 +17,7 @@ const QuantumCircuit = ({ quantumData }) => {
     <motion.div variants={containerVariants} initial="hidden" animate="show" className="max-w-5xl mx-auto mt-10 space-y-8">
       <motion.div variants={itemVariants} className="text-center relative">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-32 bg-cyan-500/20 rounded-full blur-[80px] pointer-events-none"></div>
-        <h2 className="text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-400 to-purple-400 tracking-widest uppercase mb-4 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]">
-          Circuito Cuántico
-        </h2>
+        <AnimatedTitle text="Circuito Cuántico de Simulación" type="word" className="text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-400 to-purple-400 tracking-widest uppercase mb-4 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)] flex justify-center w-full" />
         <p className="text-cyan-100/70 mt-4 max-w-2xl mx-auto text-sm tracking-widest uppercase font-bold">
           Codificación <span className="text-cyan-500">»</span> Scrambling <span className="text-purple-500">»</span> Recuperación
         </p>
@@ -67,27 +66,27 @@ const QuantumCircuit = ({ quantumData }) => {
 
       {/* Teoría Cuántica */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12 pb-12">
-        <motion.div variants={itemVariants} className="bento-glass-card p-10 border-purple-500/40 group">
-          <h3 className="text-2xl font-bold text-purple-400 mb-6 flex items-center gap-3 uppercase tracking-widest">
-            <span className="text-2xl">🌊</span> Superposición
-          </h3>
-          <ul className="text-gray-300 space-y-4 mb-6">
-            <motion.li variants={itemVariants} className="flex gap-3"><span className="text-purple-500">»</span> <p><strong>Múltiples Estados:</strong> Un cúbit es una combinación probabilística de 0 y 1.</p></motion.li>
-            <motion.li variants={itemVariants} className="flex gap-3"><span className="text-purple-500">»</span> <p><strong>Vectores Visuales:</strong> Arriba de H ves la probabilidad distribuida (Matriz de Densidad).</p></motion.li>
-          </ul>
+        <motion.div variants={itemVariants} className="bento-glass-card p-10 border-purple-500/40 group flex flex-col justify-between">
+          <div>
+            <AnimatedTitle text="Superposición" type="word" className="text-2xl font-bold text-purple-400 mb-6 flex items-center gap-3 uppercase tracking-widest drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]" />
+            <ul className="text-gray-300 space-y-4 mb-6">
+              <motion.li variants={itemVariants} className="flex gap-3"><span className="text-purple-500">»</span> <p><strong>Múltiples Estados:</strong> Un cúbit es una combinación probabilística de 0 y 1.</p></motion.li>
+              <motion.li variants={itemVariants} className="flex gap-3"><span className="text-purple-500">»</span> <p><strong>Vectores Visuales:</strong> Arriba de H ves la probabilidad interactiva (50/50).</p></motion.li>
+            </ul>
+          </div>
           <motion.div variants={itemVariants} className="bg-purple-950/40 p-4 rounded-xl border border-purple-500/30 font-mono text-center text-sm text-purple-200 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
             |ψ⟩ = α|0⟩ + β|1⟩
           </motion.div>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="bento-glass-card p-10 border-cyan-500/40 group">
-          <h3 className="text-3xl font-black text-cyan-400 mb-6 flex items-center gap-3 uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">
-            <span className="text-4xl">🔗</span> Entrelazamiento
-          </h3>
-          <ul className="text-gray-300 space-y-4 mb-6">
-            <motion.li variants={itemVariants} className="flex gap-3"><span className="text-cyan-500">»</span> <p><strong>Conexión Cuántica:</strong> Cúbits unidos. Medir uno altera al otro al instante.</p></motion.li>
-            <motion.li variants={itemVariants} className="flex gap-3"><span className="text-cyan-500">»</span> <p><strong>Scrambling:</strong> Distribuye la información simulando un Agujero Negro.</p></motion.li>
-          </ul>
+        <motion.div variants={itemVariants} className="bento-glass-card p-10 border-cyan-500/40 group flex flex-col justify-between">
+          <div>
+            <AnimatedTitle text="Entrelazamiento" type="word" className="text-2xl font-black text-cyan-400 mb-6 flex items-center gap-3 uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]" />
+            <ul className="text-gray-300 space-y-4 mb-6">
+              <motion.li variants={itemVariants} className="flex gap-3"><span className="text-cyan-500">»</span> <p><strong>Conexión Cuántica:</strong> Cúbits unidos. Medir uno altera al otro al instante.</p></motion.li>
+              <motion.li variants={itemVariants} className="flex gap-3"><span className="text-cyan-500">»</span> <p><strong>Scrambling:</strong> Distribuye la información simulando un Agujero Negro.</p></motion.li>
+            </ul>
+          </div>
           <motion.div variants={itemVariants} className="bg-cyan-950/40 p-4 rounded-xl border border-cyan-500/30 font-mono text-center text-sm text-cyan-200 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
             |ψ_entrelazado⟩ = (|000⟩ + |111⟩) / √2
           </motion.div>
@@ -97,14 +96,31 @@ const QuantumCircuit = ({ quantumData }) => {
   );
 };
 
-const Gate = ({ color, label, showVector }) => (
-  <div className="relative z-10 flex flex-col items-center">
-    {showVector && (
-      <div className="absolute top-[-25px] flex gap-[3px] items-end h-[15px] opacity-80 pointer-events-none">
-        <motion.div animate={{ height: ["100%", "50%", "100%"] }} transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }} className="w-1.5 bg-cyan-400 rounded-sm"></motion.div>
-        <motion.div animate={{ height: ["0%", "50%", "0%"] }} transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }} className="w-1.5 bg-purple-400 rounded-sm"></motion.div>
-      </div>
-    )}
+const Gate = ({ color, label, showVector }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div 
+      className="relative z-10 flex flex-col items-center"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {showVector && (
+        <motion.div 
+          animate={{ y: isHovered ? -5 : 0 }}
+          className="absolute top-[-35px] flex flex-col items-center gap-1 z-20 cursor-pointer pointer-events-auto"
+        >
+          <div className="flex gap-1 items-end h-[16px]">
+            <motion.div animate={{ height: ["100%", "50%", "100%"] }} transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }} className="w-2 bg-cyan-400 rounded-sm shadow-[0_0_5px_#22d3ee]"></motion.div>
+            <motion.div animate={{ height: ["0%", "50%", "0%"] }} transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }} className="w-2 bg-purple-400 rounded-sm shadow-[0_0_5px_#c084fc]"></motion.div>
+          </div>
+          {isHovered && (
+            <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="absolute top-[-20px] whitespace-nowrap text-[9px] font-mono font-bold bg-black/80 px-2 py-0.5 rounded-sm border border-cyan-500/30 text-white shadow-lg">
+              <span className="text-cyan-300">50%|0⟩</span> <span className="text-purple-300">50%|1⟩</span>
+            </motion.div>
+          )}
+        </motion.div>
+      )}
     <motion.div 
       whileHover={{ scale: 1.25, rotate: 5 }}
       whileTap={{ scale: 0.95 }}

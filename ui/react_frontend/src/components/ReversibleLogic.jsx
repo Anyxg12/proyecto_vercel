@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import AnimatedTitle from './AnimatedTitle';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -16,7 +17,7 @@ const ReversibleLogic = ({ logicData, control, setControl, target, setTarget }) 
     <motion.div variants={containerVariants} initial="hidden" animate="show" className="max-w-5xl mx-auto mt-6 space-y-8 pb-12">
       <div className="p-10 bento-glass-card border-cyan-500/50 group">
         <div className="absolute top-[-50px] left-[-50px] w-64 h-64 bg-cyan-600/10 rounded-full blur-[80px] group-hover:bg-cyan-500/20 transition-all duration-700 pointer-events-none"></div>
-        <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-10 text-center uppercase tracking-widest relative z-10 drop-shadow-[0_0_15px_rgba(0,243,255,0.5)]">Física Cuántica (CNOT)</h2>
+        <AnimatedTitle text="Lógica Reversible (CNOT)" type="word" className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-10 text-center uppercase tracking-widest relative z-10 drop-shadow-[0_0_15px_rgba(0,243,255,0.5)] flex justify-center w-full" />
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center mb-10 relative z-10">
           <div className="flex flex-col gap-4">
@@ -80,30 +81,28 @@ const ReversibleLogic = ({ logicData, control, setControl, target, setTarget }) 
       {/* Teoría y Ejemplo Práctico */}
       <motion.div variants={itemVariants} className="bento-glass-card p-10 border-cyan-500/30 group">
         <div className="absolute top-[-50px] right-[-50px] w-64 h-64 bg-cyan-600/10 rounded-full blur-[80px] group-hover:bg-cyan-500/20 transition-all duration-700 pointer-events-none"></div>
-        <h3 className="text-3xl font-black text-cyan-400 mb-8 flex items-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">
-          <span className="text-4xl">🔄</span> Conservación de Información
-        </h3>
+        <AnimatedTitle text="Conservación Biunívoca de Datos" type="word" className="text-3xl font-black text-cyan-400 mb-8 flex items-center justify-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)] w-full" />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
-          <ul className="text-gray-300 space-y-5 text-lg font-medium">
-            <motion.li variants={itemVariants} className="flex gap-4 items-start"><span className="text-cyan-400 font-bold text-2xl">»</span> <p><strong>Mapeo 1 a 1:</strong> Entran 2 bits, salen 2 bits. No se pierde absolutamente nada.</p></motion.li>
-            <motion.li variants={itemVariants} className="flex gap-4 items-start"><span className="text-cyan-400 font-bold text-2xl">»</span> <p><strong>Cero Fricción:</strong> Evadimos el límite de Landauer. Es energía 100% eficiente.</p></motion.li>
-            <motion.li variants={itemVariants} className="flex gap-4 items-start"><span className="text-cyan-400 font-bold text-2xl">»</span> <p><strong>Viaje Temporal Matemático:</strong> Aplicar CNOT al revés restaura el origen perfecto.</p></motion.li>
+          <ul className="text-gray-300 space-y-5 text-lg font-medium flex flex-col justify-center">
+            <motion.li variants={itemVariants} className="flex gap-4 items-start"><span className="text-cyan-400 font-bold text-2xl">»</span> <p><strong>Mapeo 1 a 1:</strong> Entran 2 bits, salen 2 bits. La dimensión del estado lógico se mantiene constante.</p></motion.li>
+            <motion.li variants={itemVariants} className="flex gap-4 items-start"><span className="text-cyan-400 font-bold text-2xl">»</span> <p><strong>Determinismo Bidireccional:</strong> Cada combinación de salida proviene de un único y exclusivo par de entradas.</p></motion.li>
+            <motion.li variants={itemVariants} className="flex gap-4 items-start"><span className="text-cyan-400 font-bold text-2xl">»</span> <p><strong>Viaje Lógico Inverso:</strong> Al no haber ambigüedad, aplicar la misma operación deshace el cómputo y restaura el origen.</p></motion.li>
           </ul>
 
           <div className="space-y-6">
             <motion.div variants={itemVariants} className="bg-cyan-950/30 border border-cyan-500/50 p-6 rounded-2xl shadow-[inset_0_0_30px_rgba(0,243,255,0.1)] group-hover:shadow-[0_0_30px_rgba(0,243,255,0.15)] transition-all">
               <h4 className="text-cyan-300 font-bold mb-3 flex items-center gap-2 text-sm uppercase tracking-widest">
-                <span className="text-xl">🔑</span> Criptografía Cuántica Perfecta
+                <span className="text-xl">🔑</span> Criptografía Irrompible
               </h4>
               <p className="text-sm text-gray-400 leading-relaxed">
-                Usa CNOT como candado. Cifra el mensaje aplicando la clave. Aplica la misma clave otra vez, y gracias a la reversibilidad matemática, recuperarás el mensaje.
+                Usa el cúbit de Control como tu "clave", y el Objetivo como tu "mensaje". Aplica CNOT para cifrar. Para descifrar, sencillamente aplica CNOT otra vez usando la misma clave.
               </p>
             </motion.div>
             
             <motion.div variants={itemVariants} className="bg-purple-950/40 border border-purple-500/50 p-5 rounded-xl flex items-center justify-between shadow-[0_0_20px_rgba(168,85,247,0.15)] overflow-hidden relative">
               <div className="absolute top-0 left-0 w-1 h-full bg-purple-400"></div>
-              <span className="text-xs uppercase text-purple-400 tracking-widest pl-2">Propiedad Inversa</span>
+              <span className="text-xs uppercase text-purple-400 tracking-widest pl-2">Propiedad de Involución</span>
               <p className="font-mono text-xl font-bold text-white glow-text-purple">
                 CNOT(CNOT(x)) = x
               </p>

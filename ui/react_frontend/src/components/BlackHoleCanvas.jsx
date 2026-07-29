@@ -76,14 +76,17 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
     let innerColor = 0xc084fc;
     let outerColor = 0x00f3ff;
     if (etapa === 'Entrada') {
-      innerColor = 0x2563eb; // blue-600
-      outerColor = 0x60a5fa; // blue-400
+      innerColor = 0x2563eb;
+      outerColor = 0x60a5fa;
     } else if (etapa === 'Radiación') {
-      innerColor = 0xea580c; // orange-600
-      outerColor = 0xfacc15; // yellow-400
+      innerColor = 0xea580c;
+      outerColor = 0xfacc15;
+    } else if (etapa === 'Salida') {
+      innerColor = 0x16a34a; // green-600
+      outerColor = 0x4ade80; // green-400
     }
 
-    // 1. Singularidad
+    // 1. Singularidad y Halos
     const singularity = new THREE.Mesh(
       new THREE.SphereGeometry(9.5, 64, 64),
       new THREE.MeshBasicMaterial({ color: 0x000000 })
@@ -91,55 +94,82 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
     scene.add(singularity);
 
     scene.add(new THREE.Mesh(
-      new THREE.SphereGeometry(10.0, 64, 64),
-      new THREE.MeshBasicMaterial({ color: innerColor, transparent: true, opacity: 0.5, side: THREE.BackSide, blending: THREE.AdditiveBlending })
+      new THREE.SphereGeometry(10.2, 64, 64),
+      new THREE.MeshBasicMaterial({ color: innerColor, transparent: true, opacity: 0.6, side: THREE.BackSide, blending: THREE.AdditiveBlending })
     ));
 
     scene.add(new THREE.Mesh(
-      new THREE.SphereGeometry(10.7, 64, 64),
-      new THREE.MeshBasicMaterial({ color: outerColor, transparent: true, opacity: 0.35, side: THREE.BackSide, blending: THREE.AdditiveBlending })
+      new THREE.SphereGeometry(11.5, 64, 64),
+      new THREE.MeshBasicMaterial({ color: outerColor, transparent: true, opacity: 0.25, side: THREE.BackSide, blending: THREE.AdditiveBlending })
     ));
 
-    // 2. Anillos Fotónicos
+    scene.add(new THREE.Mesh(
+      new THREE.SphereGeometry(16.0, 64, 64),
+      new THREE.MeshBasicMaterial({ color: outerColor, transparent: true, opacity: 0.08, side: THREE.BackSide, blending: THREE.AdditiveBlending })
+    ));
+
+    // 2. Anillos Fotónicos (Gravitational Lensing Illusion)
     const photonRing1 = new THREE.Mesh(
-      new THREE.RingGeometry(9.8, 11.6, 64),
-      new THREE.MeshBasicMaterial({ color: outerColor, side: THREE.DoubleSide, transparent: true, opacity: 0.98, blending: THREE.AdditiveBlending })
+      new THREE.RingGeometry(9.8, 12.0, 128),
+      new THREE.MeshBasicMaterial({ color: outerColor, side: THREE.DoubleSide, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending })
     );
     photonRing1.rotation.x = Math.PI / 2;
     scene.add(photonRing1);
 
     const photonRing2 = new THREE.Mesh(
-      new THREE.RingGeometry(11.7, 13.2, 64),
-      new THREE.MeshBasicMaterial({ color: innerColor, side: THREE.DoubleSide, transparent: true, opacity: 0.78, blending: THREE.AdditiveBlending })
+      new THREE.RingGeometry(12.2, 14.5, 128),
+      new THREE.MeshBasicMaterial({ color: innerColor, side: THREE.DoubleSide, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending })
     );
     photonRing2.rotation.x = Math.PI / 2;
     scene.add(photonRing2);
 
+    // 2.5 Campo Gravitacional 360° (Estrellas / Partículas de Vacío)
+    const starCount = 3000;
+    const starGeo = new THREE.BufferGeometry();
+    const starPos = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+        const r = 50 + Math.random() * 150;
+        const thetaStar = Math.random() * Math.PI * 2;
+        const phiStar = Math.acos(2 * Math.random() - 1);
+        starPos[i * 3] = r * Math.sin(phiStar) * Math.cos(thetaStar);
+        starPos[i * 3 + 1] = r * Math.sin(phiStar) * Math.sin(thetaStar);
+        starPos[i * 3 + 2] = r * Math.cos(phiStar);
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    const starField = new THREE.Points(starGeo, new THREE.PointsMaterial({
+        size: 0.8, color: 0xffffff, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending
+    }));
+    scene.add(starField);
+
     // 3. Disco de Acreción
-    const diskCount = 20000;
+    const diskCount = 35000;
     const diskGeo = new THREE.BufferGeometry();
     const diskPos = new Float32Array(diskCount * 3);
     const diskColors = new Float32Array(diskCount * 3);
     const diskVelocities = [];
 
     for (let i = 0; i < diskCount; i++) {
-        const r = 10.5 + Math.random() * 52.0;
+        const r = 11.0 + Math.random() * 58.0;
         const thetaAngle = Math.random() * Math.PI * 2;
-        const yOffset = (Math.random() - 0.5) * (2.0 * (r / 52.0));
+        // Mayor grosor en el exterior, más fino cerca del horizonte
+        const thickness = (r - 10.5) * 0.15;
+        const yOffset = (Math.random() - 0.5) * thickness * (Math.random() > 0.5 ? 1 : -1);
 
         diskPos[i * 3] = r * Math.cos(thetaAngle);
         diskPos[i * 3 + 1] = yOffset;
         diskPos[i * 3 + 2] = r * Math.sin(thetaAngle);
 
-        const keplerSpeed = (0.36 / Math.sqrt(r)) * (1 + (phi / 360) * 0.4);
-        diskVelocities.push({ r, angle: thetaAngle, speed: keplerSpeed });
+        const keplerSpeed = (0.42 / Math.sqrt(r)) * (1 + (phi / 360) * 0.5);
+        diskVelocities.push({ r, angle: thetaAngle, speed: keplerSpeed, yOriginal: yOffset });
 
-        const normR = (r - 10.5) / 52.0;
+        const normR = (r - 11.0) / 58.0;
         const color = new THREE.Color();
         if (etapa === 'Entrada') {
-            color.setHSL(0.55 - normR * 0.05, 0.9, 0.7); // Shades of blue
+            color.setHSL(0.55 - normR * 0.05, 0.9, 0.7);
         } else if (etapa === 'Radiación') {
-            color.setHSL(0.1 - normR * 0.08, 1.0, 0.6); // Shades of orange/red
+            color.setHSL(0.1 - normR * 0.1, 1.0, 0.65);
+        } else if (etapa === 'Salida') {
+            color.setHSL(0.35 + normR * 0.1, 0.9, 0.6);
         } else {
             if (normR < 0.22) color.setHSL(0.53 - normR * 0.08, 1.0, 0.88);
             else if (normR < 0.62) color.setHSL(0.72 + normR * 0.06, 0.95, 0.68);
@@ -264,6 +294,8 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
 
         photonRing1.rotation.z -= 0.005;
         photonRing2.rotation.z += 0.003;
+        starField.rotation.y += 0.0005;
+        starField.rotation.x += 0.0002;
         renderer.render(scene, camera);
     };
     animate();

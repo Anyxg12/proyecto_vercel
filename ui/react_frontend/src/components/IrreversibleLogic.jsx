@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import AnimatedTitle from './AnimatedTitle';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -16,7 +17,7 @@ const IrreversibleLogic = ({ logicData, inputA, setInputA, inputB, setInputB }) 
     <motion.div variants={containerVariants} initial="hidden" animate="show" className="max-w-5xl mx-auto mt-6 space-y-8 pb-12">
       <div className="p-10 bento-glass-card border-red-500/50 group">
         <div className="absolute top-[-50px] right-[-50px] w-64 h-64 bg-red-600/10 rounded-full blur-[80px] group-hover:bg-red-500/20 transition-all duration-700 pointer-events-none"></div>
-        <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-500 mb-10 text-center uppercase tracking-widest relative z-10 drop-shadow-[0_0_15px_rgba(255,0,0,0.5)]">Física Clásica (AND)</h2>
+        <AnimatedTitle text="Lógica Irreversible (AND)" type="word" className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-500 mb-10 text-center uppercase tracking-widest relative z-10 drop-shadow-[0_0_15px_rgba(255,0,0,0.5)] flex justify-center w-full" />
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center mb-10 relative z-10">
           <div className="flex flex-col gap-4">
@@ -56,18 +57,14 @@ const IrreversibleLogic = ({ logicData, inputA, setInputA, inputB, setInputB }) 
               className="w-36 h-36 bg-[#0a0202] rounded-3xl flex items-center justify-center border-2 border-red-500 z-10 relative"
             >
               <span className="text-4xl font-black text-red-500 tracking-widest drop-shadow-[0_0_15px_rgba(255,0,0,1)]">AND</span>
-              
-              {/* Partículas de Calor (Pérdida) */}
+              {/* Desvanecimiento de bit */}
               <motion.div
-                animate={{ y: [0, 60], x: [0, 40], opacity: [1, 0], scale: [1, 0] }}
-                transition={{ repeat: Infinity, duration: 2.5, times: [0.5, 1] }}
-                className="absolute top-1/2 left-1/2 w-4 h-4 bg-red-500 rounded-full blur-[2px]"
-              />
-              <motion.div
-                animate={{ y: [0, -60], x: [0, 40], opacity: [1, 0], scale: [1, 0] }}
-                transition={{ repeat: Infinity, duration: 2.5, times: [0.5, 1] }}
-                className="absolute top-1/2 left-1/2 w-4 h-4 bg-orange-500 rounded-full blur-[2px]"
-              />
+                animate={{ opacity: [0, 1, 0], scale: [0.5, 1.2, 2] }}
+                transition={{ repeat: Infinity, duration: 2.5, times: [0.3, 0.5, 0.7] }}
+                className="absolute text-4xl font-black text-red-500/30"
+              >
+                ?
+              </motion.div>
             </motion.div>
 
             {/* Bit Saliente */}
@@ -94,29 +91,39 @@ const IrreversibleLogic = ({ logicData, inputA, setInputA, inputB, setInputB }) 
         </div>
       </div>
 
-      {/* Teoría de Landauer */}
+      {/* Deducción Lógica */}
       <motion.div variants={itemVariants} className="bento-glass-card p-10 border-red-500/30 group">
         <div className="absolute bottom-[-50px] left-[-50px] w-64 h-64 bg-red-600/10 rounded-full blur-[80px] group-hover:bg-red-500/20 transition-all duration-700 pointer-events-none"></div>
-        <h3 className="text-3xl font-black text-red-400 mb-8 flex items-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(255,0,0,0.5)]">
-          <span className="text-4xl">📉</span> Principio de Landauer
-        </h3>
+        <AnimatedTitle text="Pérdida de Deducción Lógica" type="word" className="text-3xl font-black text-red-400 mb-8 flex items-center justify-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(255,0,0,0.5)] w-full" />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
-          <ul className="text-gray-300 space-y-5 text-lg font-medium">
-            <motion.li variants={itemVariants} className="flex gap-4 items-start"><span className="text-red-500 font-bold text-2xl">»</span> <p><strong>Aniquilación de Datos:</strong> Ingresan 2 bits, sale 1. El restante se destruye.</p></motion.li>
-            <motion.li variants={itemVariants} className="flex gap-4 items-start"><span className="text-red-500 font-bold text-2xl">»</span> <p><strong>Borrar = Calor:</strong> Destruir el bit incrementa la entropía del universo.</p></motion.li>
-            <motion.li variants={itemVariants} className="flex gap-4 items-start"><span className="text-red-500 font-bold text-2xl">»</span> <p><strong>Límite Físico:</strong> Este calor impide que los procesadores superen ciertos GHz.</p></motion.li>
+          <ul className="text-gray-300 space-y-5 text-lg font-medium flex flex-col justify-center">
+            <motion.li variants={itemVariants} className="flex gap-4 items-start"><span className="text-red-500 font-bold text-2xl">»</span> <p><strong>Reducción de Estado:</strong> Ingresan 2 bits (4 combinaciones), pero solo sale 1 bit (2 estados posibles).</p></motion.li>
+            <motion.li variants={itemVariants} className="flex gap-4 items-start"><span className="text-red-500 font-bold text-2xl">»</span> <p><strong>Ambigüedad Fundamental:</strong> Si la salida del AND es <code>0</code>, es imposible deducir lógicamente qué entradas lo originaron.</p></motion.li>
+            <motion.li variants={itemVariants} className="flex gap-4 items-start"><span className="text-red-500 font-bold text-2xl">»</span> <p><strong>Irreversibilidad:</strong> El cálculo no puede correrse "hacia atrás". La información pasada se ha esfumado del universo lógico.</p></motion.li>
           </ul>
 
           <div className="flex flex-col justify-center">
             <div className="bg-red-950/40 border border-red-500/50 p-8 rounded-2xl shadow-[inset_0_0_30px_rgba(255,0,0,0.15)] relative overflow-hidden group-hover:shadow-[0_0_40px_rgba(255,0,0,0.2)] transition-all">
-              <span className="text-sm uppercase text-red-400 tracking-widest block mb-4">La Ecuación del Calor Fatal</span>
-              <p className="font-mono text-3xl font-bold text-white tracking-widest text-center glow-text-cyan">
-                E = k_B · T · ln(2)
-              </p>
-              <p className="text-sm text-gray-400 mt-6 text-center">
-                Cada vez que se borra un bit, el universo se calienta exactamente esta cantidad.
-              </p>
+              <span className="text-sm uppercase text-red-400 tracking-widest block mb-4 text-center">Colapso de la Tabla de Verdad</span>
+              <div className="flex justify-between items-center bg-black/40 p-4 rounded-xl border border-red-500/20 mb-2">
+                <span className="font-mono text-gray-400">0 AND 0</span>
+                <span className="text-red-500 font-black">{'->'}</span>
+                <span className="font-mono text-white text-xl">0</span>
+              </div>
+              <div className="flex justify-between items-center bg-black/40 p-4 rounded-xl border border-red-500/20 mb-2">
+                <span className="font-mono text-gray-400">0 AND 1</span>
+                <span className="text-red-500 font-black">{'->'}</span>
+                <span className="font-mono text-white text-xl">0</span>
+              </div>
+              <div className="flex justify-between items-center bg-black/40 p-4 rounded-xl border border-red-500/20 mb-2">
+                <span className="font-mono text-gray-400">1 AND 0</span>
+                <span className="text-red-500 font-black">{'->'}</span>
+                <span className="font-mono text-white text-xl">0</span>
+              </div>
+              <div className="text-center text-xs text-red-400 mt-4 uppercase tracking-widest">
+                Tres caminos convergen en uno. Indescriptible.
+              </div>
             </div>
           </div>
         </div>

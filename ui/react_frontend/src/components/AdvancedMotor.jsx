@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import BlackHoleCanvas from './BlackHoleCanvas';
+import AnimatedTitle from './AnimatedTitle';
 
 const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
   const [userPhase, setUserPhase] = useState('Distribución');
@@ -14,7 +15,7 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
           className="bento-glass-card p-6 group border-purple-500/40"
         >
           <div className="absolute top-[-50px] right-[-50px] w-48 h-48 bg-purple-500/10 rounded-full blur-[60px] group-hover:bg-purple-500/20 transition-all pointer-events-none"></div>
-          <h3 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-magenta-500 mb-6 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]">Parámetros (Qiskit)</h3>
+          <AnimatedTitle text="Parámetros (Qiskit)" type="word" className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-magenta-500 mb-6 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)] w-full" />
           
           <div className="mb-6">
             <div className="flex justify-between text-sm mb-2">
@@ -49,7 +50,7 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
         >
           <div className="absolute top-[-50px] left-[-50px] w-48 h-48 bg-cyan-500/10 rounded-full blur-[60px] group-hover:bg-cyan-500/20 transition-all pointer-events-none"></div>
           <div className="flex justify-between items-center mb-6 relative z-10">
-            <h3 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">Flujo de Datos</h3>
+            <AnimatedTitle text="Flujo de Datos" type="word" className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]" />
             <div className="bg-green-950/40 px-3 py-1 rounded-full border border-green-500/50 shadow-[0_0_20px_rgba(34,197,94,0.5)] animate-pulse">
               <span className="text-xs text-green-400 font-bold uppercase tracking-wider">Fidelidad: {quantumData ? (quantumData.fidelidad * 100).toFixed(2) : '100.00'}%</span>
             </div>
@@ -99,10 +100,11 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
       <div className="lg:col-span-2 flex flex-col gap-4">
         {/* Phase Controls */}
         <div className="bento-glass-card p-4 flex flex-wrap gap-4 justify-center items-center border-white/10">
-          <span className="text-gray-400 font-bold uppercase tracking-widest text-sm">Control de Fase:</span>
+          <span className="text-gray-400 font-bold uppercase tracking-widest text-sm w-full text-center sm:w-auto">Control de Fase:</span>
           <button onClick={() => setUserPhase('Entrada')} className={`px-4 py-2 rounded-xl font-bold transition-all ${userPhase === 'Entrada' ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.8)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>1. Entrada</button>
           <button onClick={() => setUserPhase('Distribución')} className={`px-4 py-2 rounded-xl font-bold transition-all ${userPhase === 'Distribución' ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.8)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>2. Scrambling</button>
           <button onClick={() => setUserPhase('Radiación')} className={`px-4 py-2 rounded-xl font-bold transition-all ${userPhase === 'Radiación' ? 'bg-orange-600 text-white shadow-[0_0_15px_rgba(234,88,12,0.8)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>3. Radiación</button>
+          <button onClick={() => setUserPhase('Salida')} className={`px-4 py-2 rounded-xl font-bold transition-all ${userPhase === 'Salida' ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.8)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>4. Recuperación</button>
         </div>
 
         <motion.div 
@@ -127,9 +129,7 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
           className="bento-glass-card p-10 border-orange-500/40 group"
         >
           <div className="absolute top-[-50px] right-[-50px] w-64 h-64 bg-orange-600/10 rounded-full blur-[80px] group-hover:bg-orange-500/20 transition-all duration-700 pointer-events-none"></div>
-          <h3 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500 mb-8 flex items-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)]">
-            <span className="text-5xl">🌌</span> Paradoja de la Información
-          </h3>
+          <AnimatedTitle text="Paradoja de la Información" type="word" className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500 mb-8 flex items-center justify-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)] w-full" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-300 relative z-10">
             <ul className="space-y-4">
               <li className="flex gap-3"><span className="text-orange-500 font-bold">»</span> <strong>El Dilema de Hawking:</strong> Si un agujero negro se evapora emitiendo radiación térmica, la información de lo que cayó dentro parece destruirse (violando la mecánica cuántica).</li>
