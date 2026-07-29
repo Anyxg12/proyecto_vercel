@@ -71,30 +71,30 @@ const QuantumCircuit = ({ quantumData }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12 pb-12">
         <SpotlightCard color="rgba(168,85,247,0.2)" className="p-10 flex flex-col justify-between group">
           <BorderBeam colorFrom="#a855f7" colorTo="#d946ef" duration={10} />
-          <div>
+          <div className="relative z-10 bg-black/30 p-6 rounded-2xl border border-white/5 backdrop-blur-sm shadow-[0_0_20px_rgba(168,85,247,0.1)]">
             <AnimatedTitle text="Superposición" type="shimmer" className="text-2xl font-bold text-purple-400 mb-6 flex items-center gap-3 uppercase tracking-widest drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]" />
-            <ul className="text-gray-300 space-y-4 mb-6">
-              <motion.li variants={itemVariants} className="flex gap-3"><span className="text-purple-500">»</span> <p><strong>Múltiples Estados:</strong> Un cúbit es una combinación probabilística de 0 y 1.</p></motion.li>
-              <motion.li variants={itemVariants} className="flex gap-3"><span className="text-purple-500">»</span> <p><strong>Vectores Visuales:</strong> Arriba de H ves la probabilidad interactiva (50/50).</p></motion.li>
+            <ul className="text-gray-100 space-y-4 mb-6 text-sm lg:text-base font-medium relative z-10">
+              <motion.li variants={itemVariants} className="flex gap-3"><span className="text-purple-400 font-bold text-xl drop-shadow-[0_0_5px_rgba(168,85,247,0.8)]">»</span> <p><strong className="text-white drop-shadow-[0_0_3px_rgba(255,255,255,0.8)]">Múltiples Estados:</strong> Un cúbit es una combinación probabilística de 0 y 1.</p></motion.li>
+              <motion.li variants={itemVariants} className="flex gap-3"><span className="text-purple-400 font-bold text-xl drop-shadow-[0_0_5px_rgba(168,85,247,0.8)]">»</span> <p><strong className="text-white drop-shadow-[0_0_3px_rgba(255,255,255,0.8)]">Vectores Visuales:</strong> Arriba de H ves la probabilidad interactiva (50/50).</p></motion.li>
             </ul>
           </div>
-          <motion.div variants={itemVariants} className="bg-purple-950/40 p-4 rounded-xl border border-purple-500/30 font-mono text-center text-sm text-purple-200 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-            |ψ⟩ = α|0⟩ + β|1⟩
-          </motion.div>
+          <div className="bg-purple-950/40 p-4 rounded-xl border border-purple-500/40 text-center relative z-10">
+              <code className="text-purple-300 font-mono font-bold drop-shadow-[0_0_5px_rgba(168,85,247,0.8)]">|ψ⟩ = α|0⟩ + β|1⟩</code>
+          </div>
         </SpotlightCard>
 
         <SpotlightCard color="rgba(6,182,212,0.2)" className="p-10 flex flex-col justify-between group">
           <BorderBeam colorFrom="#06b6d4" colorTo="#3b82f6" duration={10} />
-          <div>
-            <AnimatedTitle text="Entrelazamiento" type="word" className="text-2xl font-black text-cyan-400 mb-6 flex items-center gap-3 uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]" />
-            <ul className="text-gray-300 space-y-4 mb-6">
-              <motion.li variants={itemVariants} className="flex gap-3"><span className="text-cyan-500">»</span> <p><strong>Conexión Cuántica:</strong> Cúbits unidos. Medir uno altera al otro al instante.</p></motion.li>
-              <motion.li variants={itemVariants} className="flex gap-3"><span className="text-cyan-500">»</span> <p><strong>Scrambling:</strong> Distribuye la información simulando un Agujero Negro.</p></motion.li>
+          <div className="relative z-10 bg-black/30 p-6 rounded-2xl border border-white/5 backdrop-blur-sm shadow-[0_0_20px_rgba(34,211,238,0.1)]">
+            <AnimatedTitle text="Entrelazamiento" type="shimmer" className="text-2xl font-bold text-cyan-400 mb-6 flex items-center gap-3 uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]" />
+            <ul className="text-gray-100 space-y-4 mb-6 text-sm lg:text-base font-medium relative z-10">
+              <motion.li variants={itemVariants} className="flex gap-3"><span className="text-cyan-400 font-bold text-xl drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]">»</span> <p><strong className="text-white drop-shadow-[0_0_3px_rgba(255,255,255,0.8)]">Conexión Cuántica:</strong> Cúbits unidos. Medir uno altera al otro al instante.</p></motion.li>
+              <motion.li variants={itemVariants} className="flex gap-3"><span className="text-cyan-400 font-bold text-xl drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]">»</span> <p><strong className="text-white drop-shadow-[0_0_3px_rgba(255,255,255,0.8)]">Scrambling:</strong> Distribuye la información simulando un Agujero Negro.</p></motion.li>
             </ul>
           </div>
-          <motion.div variants={itemVariants} className="bg-cyan-950/40 p-4 rounded-xl border border-cyan-500/30 font-mono text-center text-sm text-cyan-200 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
-            |ψ_entrelazado⟩ = (|000⟩ + |111⟩) / √2
-          </motion.div>
+          <div className="bg-cyan-950/40 p-4 rounded-xl border border-cyan-500/40 text-center relative z-10">
+              <code className="text-cyan-300 font-mono font-bold drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]">|ψ_entrelazado⟩ = (|000⟩ + |111⟩) / √2</code>
+          </div>
         </SpotlightCard>
       </div>
     </motion.div>

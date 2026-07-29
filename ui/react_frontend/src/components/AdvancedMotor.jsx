@@ -27,10 +27,10 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
           <BorderBeam colorFrom="#a855f7" colorTo="#d946ef" duration={10} />
           <AnimatedTitle text="Parámetros (Qiskit)" type="word" className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-magenta-500 mb-6 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)] w-full" />
           
-          <div className="mb-6">
+          <div className="mb-6 relative z-10 bg-black/30 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
             <div className="flex justify-between text-sm mb-2">
-              <span className="text-gray-400">Ángulo Theta (θ)</span>
-              <span className="text-purple-400 font-mono">{theta}°</span>
+              <span className="text-white font-semibold tracking-wide">Ángulo Theta (θ)</span>
+              <span className="text-purple-300 font-mono font-bold drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]">{theta}°</span>
             </div>
             <input 
               type="range" min="0" max="180" step="1" 
@@ -39,10 +39,10 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
             />
           </div>
 
-          <div>
+          <div className="relative z-10 bg-black/30 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
             <div className="flex justify-between text-sm mb-2">
-              <span className="text-gray-400">Ángulo Phi (φ)</span>
-              <span className="text-cyan-400 font-mono">{phi}°</span>
+              <span className="text-white font-semibold tracking-wide">Ángulo Phi (φ)</span>
+              <span className="text-cyan-300 font-mono font-bold drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">{phi}°</span>
             </div>
             <input 
               type="range" min="0" max="360" step="1" 
@@ -64,38 +64,38 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
           
           <div className="space-y-4 relative z-10">
              {/* Etapa 1 */}
-             <div className="bg-purple-950/20 p-3 rounded-xl border border-purple-500/30 hover:border-purple-400 hover:shadow-[0_0_15px_rgba(168,85,247,0.2)] transition-all">
-                <span className="text-[10px] text-purple-400 font-bold uppercase tracking-widest mb-1 block">1. Entrada</span>
+             <div className="bg-purple-950/40 p-3 rounded-xl border border-purple-500/30 hover:border-purple-400 hover:shadow-[0_0_15px_rgba(168,85,247,0.4)] transition-all relative z-10">
+                <span className="text-[10px] text-purple-300 font-bold uppercase tracking-widest mb-1 block drop-shadow-[0_0_5px_rgba(168,85,247,0.8)]">1. Entrada</span>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Entropía: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.entrada?.entropia.toFixed(4) ?? '0.0000'}</span></span>
-                  <span className="text-gray-400">Pureza: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.entrada?.pureza.toFixed(4) ?? '1.0000'}</span></span>
+                  <span className="text-gray-200 font-semibold">Entropía: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]">{quantumData?.entrada?.entropia.toFixed(4) ?? '0.0000'}</span></span>
+                  <span className="text-gray-200 font-semibold">Pureza: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]">{quantumData?.entrada?.pureza.toFixed(4) ?? '1.0000'}</span></span>
                 </div>
              </div>
              
              {/* Etapa 2 */}
-             <div className="bg-cyan-950/20 p-3 rounded-xl border border-cyan-500/30 hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all">
-                <span className="text-[10px] text-cyan-400 font-bold uppercase tracking-widest mb-1 block">2. Distribución (Agujero Negro)</span>
+             <div className="bg-cyan-950/40 p-3 rounded-xl border border-cyan-500/30 hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] transition-all relative z-10">
+                <span className="text-[10px] text-cyan-300 font-bold uppercase tracking-widest mb-1 block drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]">2. Distribución (Agujero Negro)</span>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Entropía: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.distribucion?.entropia.toFixed(4) ?? '0.6931'}</span></span>
-                  <span className="text-gray-400">Pureza: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.distribucion?.pureza.toFixed(4) ?? '0.5000'}</span></span>
+                  <span className="text-gray-200 font-semibold">Entropía: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]">{quantumData?.distribucion?.entropia.toFixed(4) ?? '0.6931'}</span></span>
+                  <span className="text-gray-200 font-semibold">Pureza: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]">{quantumData?.distribucion?.pureza.toFixed(4) ?? '0.5000'}</span></span>
                 </div>
              </div>
 
              {/* Etapa 3 */}
-             <div className="bg-orange-950/20 p-3 rounded-xl border border-orange-500/30 hover:border-orange-400 hover:shadow-[0_0_15px_rgba(249,115,22,0.2)] transition-all">
-                <span className="text-[10px] text-orange-400 font-bold uppercase tracking-widest mb-1 block">3. Emisión (Hawking)</span>
+             <div className="bg-orange-950/40 p-3 rounded-xl border border-orange-500/30 hover:border-orange-400 hover:shadow-[0_0_15px_rgba(249,115,22,0.4)] transition-all relative z-10">
+                <span className="text-[10px] text-orange-300 font-bold uppercase tracking-widest mb-1 block drop-shadow-[0_0_5px_rgba(249,115,22,0.8)]">3. Emisión (Hawking)</span>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Entropía: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.radiacion?.entropia.toFixed(4) ?? '0.6931'}</span></span>
-                  <span className="text-gray-400">Pureza: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.radiacion?.pureza.toFixed(4) ?? '0.5000'}</span></span>
+                  <span className="text-gray-200 font-semibold">Entropía: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]">{quantumData?.radiacion?.entropia.toFixed(4) ?? '0.6931'}</span></span>
+                  <span className="text-gray-200 font-semibold">Pureza: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]">{quantumData?.radiacion?.pureza.toFixed(4) ?? '0.5000'}</span></span>
                 </div>
              </div>
 
              {/* Etapa 4 */}
-             <div className="bg-green-950/20 p-3 rounded-xl border border-green-500/30 hover:border-green-400 hover:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all">
-                <span className="text-[10px] text-green-400 font-bold uppercase tracking-widest mb-1 block">4. Final (Recuperado)</span>
+             <div className="bg-green-950/40 p-3 rounded-xl border border-green-500/30 hover:border-green-400 hover:shadow-[0_0_15px_rgba(34,197,94,0.4)] transition-all relative z-10">
+                <span className="text-[10px] text-green-300 font-bold uppercase tracking-widest mb-1 block drop-shadow-[0_0_5px_rgba(34,197,94,0.8)]">4. Final (Recuperado)</span>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Entropía: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.salida?.entropia.toFixed(4) ?? '0.0000'}</span></span>
-                  <span className="text-gray-400">Pureza: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.salida?.pureza.toFixed(4) ?? '1.0000'}</span></span>
+                  <span className="text-gray-200 font-semibold">Entropía: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]">{quantumData?.salida?.entropia.toFixed(4) ?? '0.0000'}</span></span>
+                  <span className="text-gray-200 font-semibold">Pureza: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]">{quantumData?.salida?.pureza.toFixed(4) ?? '1.0000'}</span></span>
                 </div>
              </div>
            </div>
@@ -107,7 +107,7 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
         <SpotlightCard color="rgba(34,211,238,0.2)" className="p-4 flex flex-wrap gap-4 justify-center items-center">
           <BorderBeam colorFrom="#06b6d4" colorTo="#a855f7" duration={14} />
           <div className="relative z-10 flex flex-wrap gap-4 justify-center items-center w-full">
-            <span className="text-gray-400 font-bold uppercase tracking-widest text-sm w-full text-center sm:w-auto">Control de Fase:</span>
+            <span className="text-white font-bold uppercase tracking-widest text-sm w-full text-center sm:w-auto">Control de Fase:</span>
             <GlowButton active={userPhase === 'Entrada'} onClick={() => setUserPhase('Entrada')} color="cyan">1. Entrada</GlowButton>
             <GlowButton active={userPhase === 'Distribución'} onClick={() => setUserPhase('Distribución')} color="purple">2. Scrambling</GlowButton>
             <GlowButton active={userPhase === 'Radiación'} onClick={() => setUserPhase('Radiación')} color="orange">3. Radiación</GlowButton>
