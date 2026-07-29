@@ -54,6 +54,10 @@ def calcular_metricas_cuanticas(theta_grados, phi_grados):
             "entropia": entropia_dist,
             "pureza": pureza_dist
         },
+        "radiacion": {
+            "entropia": entropia_dist,
+            "pureza": pureza_dist
+        },
         "salida": {
             "entropia": entropia_out,
             "pureza": pureza_out
