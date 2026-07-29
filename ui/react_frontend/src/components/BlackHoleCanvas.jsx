@@ -353,7 +353,7 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
   }, [etapa, theta, phi]);
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '770px', borderRadius: '28px', overflow: 'hidden', border: '1px solid rgba(168, 85, 247, 0.35)', background: 'radial-gradient(circle at 50% 50%, #080a1a 0%, #000000 100%)', boxShadow: '0 35px 120px rgba(0,0,0,0.95), inset 0 0 90px rgba(168, 85, 247, 0.15)' }}>
+    <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: 'inherit', overflow: 'hidden', border: '1px solid rgba(168, 85, 247, 0.35)', background: 'radial-gradient(circle at 50% 50%, #080a1a 0%, #000000 100%)', boxShadow: '0 35px 120px rgba(0,0,0,0.95), inset 0 0 90px rgba(168, 85, 247, 0.15)' }}>
       <div ref={mountRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1 }} />
       <div style={{ position: 'absolute', inset: 0, zIndex: 10, pointerEvents: 'none', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '24px 28px' }}>
         
@@ -367,7 +367,7 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
             </div>
           </div>
           
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
              <MetricPill label="Ángulos θ, φ" val={`${theta}°, ${phi}°`} valColor="#38bdf8" />
              <MetricPill label="Entropía" val={entropia.toFixed(4)} valColor="#c084fc" />
              <MetricPill label="Pureza" val={pureza.toFixed(4)} valColor="#38bdf8" />
@@ -376,7 +376,7 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
         </div>
 
         {/* HUD Center Side Cards */}
-        <div style={{ position: 'absolute', top: '52%', left: 0, width: '100%', transform: 'translateY(-50%)', display: 'flex', justifyContent: 'space-between', padding: '0 30px', pointerEvents: 'none' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 10px', pointerEvents: 'none', marginBottom: 'auto', marginTop: 'auto' }}>
            <div style={{ background: 'rgba(6, 10, 26, 0.78)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255, 255, 255, 0.13)', borderRadius: '18px', padding: '16px 20px', maxWidth: '235px', boxShadow: '0 16px 40px rgba(0,0,0,0.65)' }}>
              <strong style={{ color: '#38bdf8', display: 'block', fontSize: '0.85rem', marginBottom: '5px' }}>Plano Ecuatorial (Entrada)</strong>
              <p style={{ fontSize: '0.73rem', color: '#a1a1aa' }}>Disco de acreción donde convergen los cúbits antes de cruzar el horizonte.</p>

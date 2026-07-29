@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import AnimatedTitle from './AnimatedTitle';
-import GlowCard from './GlowCard';
+import SpotlightCard from './ui/spotlight-card';
+import BorderBeam from './ui/border-beam';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -16,7 +17,8 @@ const itemVariants = {
 const ReversibleLogic = ({ logicData, control, setControl, target, setTarget }) => {
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="show" className="max-w-5xl mx-auto mt-6 space-y-8 pb-12">
-      <GlowCard color="cyan" className="p-10 group">
+      <SpotlightCard color="rgba(6,182,212,0.2)" className="p-10 group">
+        <BorderBeam colorFrom="#06b6d4" colorTo="#3b82f6" duration={12} />
         <div className="absolute top-[-50px] left-[-50px] w-64 h-64 bg-cyan-600/10 rounded-full blur-[80px] group-hover:bg-cyan-500/20 transition-all duration-700 pointer-events-none"></div>
         <AnimatedTitle text="Lógica Reversible (CNOT)" type="shimmer" className="text-4xl font-black text-transparent mb-10 text-center uppercase tracking-widest relative z-10 flex justify-center w-full" />
         
@@ -77,10 +79,11 @@ const ReversibleLogic = ({ logicData, control, setControl, target, setTarget }) 
             </div>
           </div>
         </div>
-      </GlowCard>
+      </SpotlightCard>
 
       {/* Teoría y Ejemplo Práctico */}
-      <GlowCard color="cyan" className="p-10 group">
+      <SpotlightCard color="rgba(6,182,212,0.2)" className="p-10 group">
+        <BorderBeam colorFrom="#06b6d4" colorTo="#3b82f6" duration={12} />
         <div className="absolute top-[-50px] right-[-50px] w-64 h-64 bg-cyan-600/10 rounded-full blur-[80px] group-hover:bg-cyan-500/20 transition-all duration-700 pointer-events-none"></div>
         <AnimatedTitle text="Conservación Biunívoca de Datos" type="shimmer" className="text-3xl font-black text-cyan-400 mb-8 flex items-center justify-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)] w-full" />
         
@@ -110,7 +113,7 @@ const ReversibleLogic = ({ logicData, control, setControl, target, setTarget }) 
             </motion.div>
           </div>
         </div>
-      </GlowCard>
+      </SpotlightCard>
     </motion.div>
   );
 };

@@ -8,8 +8,8 @@ import ReversibleLogic from './components/ReversibleLogic';
 import QuantumCircuit from './components/QuantumCircuit';
 import AdvancedMotor from './components/AdvancedMotor';
 import Comparison from './components/Comparison';
-import CursorTrail from './components/CursorTrail';
-import QuantumBackground from './components/QuantumBackground';
+import CometTrail from './components/ui/comet-trail';
+import BackgroundSparkles from './components/ui/background-sparkles';
 
 function App() {
   const [activeTab, setActiveTab] = useState('presentation');
@@ -56,8 +56,8 @@ function App() {
 
   return (
     <>
-      <CursorTrail />
-      <QuantumBackground />
+      <CometTrail />
+      <BackgroundSparkles />
       <div className="min-h-screen text-slate-200 flex flex-col font-sans relative overflow-hidden">
         <div className="relative z-10 flex flex-col h-full">
           <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />

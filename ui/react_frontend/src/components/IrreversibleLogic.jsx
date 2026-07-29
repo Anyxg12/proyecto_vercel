@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import AnimatedTitle from './AnimatedTitle';
-import GlowCard from './GlowCard';
+import SpotlightCard from './ui/spotlight-card';
+import BorderBeam from './ui/border-beam';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -16,7 +17,8 @@ const itemVariants = {
 const IrreversibleLogic = ({ logicData, inputA, setInputA, inputB, setInputB }) => {
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="show" className="max-w-5xl mx-auto mt-6 space-y-8 pb-12">
-      <GlowCard color="orange" className="p-10 group">
+      <SpotlightCard color="rgba(249,115,22,0.2)" className="p-10 group">
+        <BorderBeam colorFrom="#f97316" colorTo="#ef4444" duration={12} />
         <div className="absolute top-[-50px] right-[-50px] w-64 h-64 bg-red-600/10 rounded-full blur-[80px] group-hover:bg-red-500/20 transition-all duration-700 pointer-events-none"></div>
         <AnimatedTitle text="Lógica Irreversible (AND)" type="shimmer" className="text-4xl font-black text-transparent mb-10 text-center uppercase tracking-widest relative z-10 flex justify-center w-full" />
         
@@ -90,10 +92,11 @@ const IrreversibleLogic = ({ logicData, inputA, setInputA, inputB, setInputB }) 
             <p className="mt-4 text-xs text-center text-gray-400">La información ha colisionado. No se puede revertir.</p>
           </div>
         </div>
-      </GlowCard>
+      </SpotlightCard>
 
       {/* Deducción Lógica */}
-      <GlowCard color="orange" className="p-10 group">
+      <SpotlightCard color="rgba(249,115,22,0.2)" className="p-10 group">
+        <BorderBeam colorFrom="#f97316" colorTo="#ef4444" duration={12} />
         <div className="absolute bottom-[-50px] left-[-50px] w-64 h-64 bg-red-600/10 rounded-full blur-[80px] group-hover:bg-red-500/20 transition-all duration-700 pointer-events-none"></div>
         <AnimatedTitle text="Pérdida de Deducción Lógica" type="shimmer" className="text-3xl font-black text-red-400 mb-8 flex items-center justify-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(255,0,0,0.5)] w-full" />
         
@@ -128,7 +131,7 @@ const IrreversibleLogic = ({ logicData, inputA, setInputA, inputB, setInputB }) 
             </div>
           </div>
         </div>
-      </GlowCard>
+      </SpotlightCard>
     </motion.div>
   );
 };

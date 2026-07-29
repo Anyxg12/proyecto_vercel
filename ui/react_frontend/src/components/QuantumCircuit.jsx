@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import AnimatedTitle from './AnimatedTitle';
-import GlowCard from './GlowCard';
+import SpotlightCard from './ui/spotlight-card';
+import BorderBeam from './ui/border-beam';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -24,7 +25,8 @@ const QuantumCircuit = ({ quantumData }) => {
         </p>
       </motion.div>
 
-      <GlowCard color="cyan" className="p-10 overflow-x-auto relative group">
+      <SpotlightCard color="rgba(6,182,212,0.2)" className="p-10 overflow-x-auto relative group">
+         <BorderBeam colorFrom="#06b6d4" colorTo="#3b82f6" duration={12} />
          <div className="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.03)_1px,transparent_1px)] bg-[size:30px_30px] pointer-events-none group-hover:bg-[size:35px_35px] transition-all duration-1000"></div>
          <div className="min-w-[700px] flex flex-col gap-8 relative z-10">
             
@@ -63,11 +65,12 @@ const QuantumCircuit = ({ quantumData }) => {
             </div>
 
          </div>
-      </GlowCard>
+      </SpotlightCard>
 
       {/* Teoría Cuántica */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12 pb-12">
-        <GlowCard color="purple" className="p-10 flex flex-col justify-between">
+        <SpotlightCard color="rgba(168,85,247,0.2)" className="p-10 flex flex-col justify-between group">
+          <BorderBeam colorFrom="#a855f7" colorTo="#d946ef" duration={10} />
           <div>
             <AnimatedTitle text="Superposición" type="shimmer" className="text-2xl font-bold text-purple-400 mb-6 flex items-center gap-3 uppercase tracking-widest drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]" />
             <ul className="text-gray-300 space-y-4 mb-6">
@@ -78,9 +81,10 @@ const QuantumCircuit = ({ quantumData }) => {
           <motion.div variants={itemVariants} className="bg-purple-950/40 p-4 rounded-xl border border-purple-500/30 font-mono text-center text-sm text-purple-200 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
             |ψ⟩ = α|0⟩ + β|1⟩
           </motion.div>
-        </GlowCard>
+        </SpotlightCard>
 
-        <GlowCard color="cyan" className="p-10 flex flex-col justify-between">
+        <SpotlightCard color="rgba(6,182,212,0.2)" className="p-10 flex flex-col justify-between group">
+          <BorderBeam colorFrom="#06b6d4" colorTo="#3b82f6" duration={10} />
           <div>
             <AnimatedTitle text="Entrelazamiento" type="word" className="text-2xl font-black text-cyan-400 mb-6 flex items-center gap-3 uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]" />
             <ul className="text-gray-300 space-y-4 mb-6">
@@ -91,7 +95,7 @@ const QuantumCircuit = ({ quantumData }) => {
           <motion.div variants={itemVariants} className="bg-cyan-950/40 p-4 rounded-xl border border-cyan-500/30 font-mono text-center text-sm text-cyan-200 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
             |ψ_entrelazado⟩ = (|000⟩ + |111⟩) / √2
           </motion.div>
-        </GlowCard>
+        </SpotlightCard>
       </div>
     </motion.div>
   );
