@@ -104,7 +104,7 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
 
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-          className="relative w-full rounded-3xl overflow-hidden shadow-2xl"
+          className="relative w-full h-[500px] lg:h-[700px] rounded-3xl overflow-hidden shadow-2xl border border-white/5"
         >
           <BlackHoleCanvas 
             etapa={userPhase} 

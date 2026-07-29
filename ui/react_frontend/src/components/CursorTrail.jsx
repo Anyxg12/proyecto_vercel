@@ -1,57 +1,97 @@
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
 
 const CursorTrail = () => {
-  const [trails, setTrails] = useState([]);
+  const canvasRef = useRef(null);
 
   useEffect(() => {
-    let timeoutId;
-    
-    const handleMouseMove = (e) => {
-      // Evitar crear demasiadas partículas, solo crear si el mouse se mueve rápido o cada cierto interval
-      const newTrail = {
-        x: e.clientX,
-        y: e.clientY,
-        id: Date.now() + Math.random(),
-        color: Math.random() > 0.5 ? '#06b6d4' : '#a855f7' // Cyan or Purple
-      };
-      
-      setTrails((prev) => [...prev, newTrail].slice(-20)); // Mantener maximo 20 particulas
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    const mouse = { x: width / 2, y: height / 2 };
+    const trail = [];
+    const maxTrailLength = 40;
+
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
     };
 
+    const handleMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+
+    window.addEventListener('resize', resize);
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+
+    const render = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      // Añadir nueva posición del mouse al inicio del trail
+      trail.unshift({ x: mouse.x, y: mouse.y });
+      if (trail.length > maxTrailLength) {
+        trail.pop();
+      }
+
+      // Dibujar la estela (Comet trail)
+      if (trail.length > 1) {
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+
+        // Usar un gradiente o colores luminosos
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#06b6d4'; // Cyan neon
+
+        for (let i = 1; i < trail.length; i++) {
+          const pt = trail[i];
+          const prevPt = trail[i - 1];
+          
+          // El grosor se reduce a medida que se aleja
+          const progress = i / trail.length;
+          const lineWidth = (1 - progress) * 8; 
+          // La opacidad también
+          const opacity = 1 - progress;
+
+          ctx.beginPath();
+          ctx.moveTo(prevPt.x, prevPt.y);
+          ctx.lineTo(pt.x, pt.y);
+          ctx.strokeStyle = `rgba(6, 182, 212, ${opacity})`;
+          ctx.lineWidth = lineWidth;
+          ctx.stroke();
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(animationFrameId);
+    };
   }, []);
 
   return (
-    <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 9999, overflow: 'hidden' }}>
-      <AnimatePresence>
-        {trails.map((trail) => (
-          <motion.div
-            key={trail.id}
-            initial={{ opacity: 0.8, scale: 1, x: trail.x - 10, y: trail.y - 10 }}
-            animate={{ 
-              opacity: 0, 
-              scale: 0.2,
-              x: trail.x - 10 + (Math.random() - 0.5) * 20, 
-              y: trail.y - 10 + (Math.random() - 0.5) * 20 
-            }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            style={{
-              position: 'absolute',
-              width: '20px',
-              height: '20px',
-              borderRadius: '50%',
-              background: `radial-gradient(circle, ${trail.color} 0%, rgba(0,0,0,0) 70%)`,
-              boxShadow: `0 0 10px ${trail.color}, 0 0 20px ${trail.color}`,
-              pointerEvents: 'none',
-              willChange: 'transform, opacity'
-            }}
-          />
-        ))}
-      </AnimatePresence>
-    </div>
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        pointerEvents: 'none',
+        zIndex: 9999,
+      }}
+    />
   );
 };
 
