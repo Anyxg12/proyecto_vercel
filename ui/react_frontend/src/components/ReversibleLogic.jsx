@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import AnimatedTitle from './AnimatedTitle';
+import GlowCard from './GlowCard';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -15,9 +16,9 @@ const itemVariants = {
 const ReversibleLogic = ({ logicData, control, setControl, target, setTarget }) => {
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="show" className="max-w-5xl mx-auto mt-6 space-y-8 pb-12">
-      <div className="p-10 bento-glass-card border-cyan-500/50 group">
+      <GlowCard color="cyan" className="p-10 group">
         <div className="absolute top-[-50px] left-[-50px] w-64 h-64 bg-cyan-600/10 rounded-full blur-[80px] group-hover:bg-cyan-500/20 transition-all duration-700 pointer-events-none"></div>
-        <AnimatedTitle text="Lógica Reversible (CNOT)" type="word" className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-10 text-center uppercase tracking-widest relative z-10 drop-shadow-[0_0_15px_rgba(0,243,255,0.5)] flex justify-center w-full" />
+        <AnimatedTitle text="Lógica Reversible (CNOT)" type="shimmer" className="text-4xl font-black text-transparent mb-10 text-center uppercase tracking-widest relative z-10 flex justify-center w-full" />
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center mb-10 relative z-10">
           <div className="flex flex-col gap-4">
@@ -76,12 +77,12 @@ const ReversibleLogic = ({ logicData, control, setControl, target, setTarget }) 
             </div>
           </div>
         </div>
-      </div>
+      </GlowCard>
 
       {/* Teoría y Ejemplo Práctico */}
-      <motion.div variants={itemVariants} className="bento-glass-card p-10 border-cyan-500/30 group">
+      <GlowCard color="cyan" className="p-10 group">
         <div className="absolute top-[-50px] right-[-50px] w-64 h-64 bg-cyan-600/10 rounded-full blur-[80px] group-hover:bg-cyan-500/20 transition-all duration-700 pointer-events-none"></div>
-        <AnimatedTitle text="Conservación Biunívoca de Datos" type="word" className="text-3xl font-black text-cyan-400 mb-8 flex items-center justify-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)] w-full" />
+        <AnimatedTitle text="Conservación Biunívoca de Datos" type="shimmer" className="text-3xl font-black text-cyan-400 mb-8 flex items-center justify-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)] w-full" />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
           <ul className="text-gray-300 space-y-5 text-lg font-medium flex flex-col justify-center">
@@ -109,7 +110,7 @@ const ReversibleLogic = ({ logicData, control, setControl, target, setTarget }) 
             </motion.div>
           </div>
         </div>
-      </motion.div>
+      </GlowCard>
     </motion.div>
   );
 };

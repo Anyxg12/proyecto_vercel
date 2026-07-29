@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import BlackHoleCanvas from './BlackHoleCanvas';
 import AnimatedTitle from './AnimatedTitle';
+import GlowCard from './GlowCard';
+import GlowButton from './GlowButton';
 
 const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
   const [userPhase, setUserPhase] = useState('Distribución');
@@ -10,10 +12,7 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
       
       {/* Controles y Métricas (Columna Izquierda) */}
       <div className="lg:col-span-1 space-y-6">
-        <motion.div 
-          initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-          className="bento-glass-card p-6 group border-purple-500/40"
-        >
+        <GlowCard color="purple" className="p-6">
           <div className="absolute top-[-50px] right-[-50px] w-48 h-48 bg-purple-500/10 rounded-full blur-[60px] group-hover:bg-purple-500/20 transition-all pointer-events-none"></div>
           <AnimatedTitle text="Parámetros (Qiskit)" type="word" className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-magenta-500 mb-6 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)] w-full" />
           
@@ -40,14 +39,10 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
               className="w-full accent-cyan-500"
             />
           </div>
-        </motion.div>
+        </GlowCard>
 
         {/* Real-time Metrics Card (4 Etapas) */}
-        {/* Real-time Metrics Card (4 Etapas) */}
-        <motion.div 
-          initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
-          className="bento-glass-card p-6 group border-cyan-500/40"
-        >
+        <GlowCard color="cyan" className="p-6">
           <div className="absolute top-[-50px] left-[-50px] w-48 h-48 bg-cyan-500/10 rounded-full blur-[60px] group-hover:bg-cyan-500/20 transition-all pointer-events-none"></div>
           <div className="flex justify-between items-center mb-6 relative z-10">
             <AnimatedTitle text="Flujo de Datos" type="word" className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]" />
@@ -92,20 +87,20 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
                   <span className="text-gray-400">Pureza: <span className="text-white font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{quantumData?.salida?.pureza.toFixed(4) ?? '1.0000'}</span></span>
                 </div>
              </div>
-          </div>
-        </motion.div>
+           </div>
+        </GlowCard>
       </div>
 
       {/* Visualización 3D (Columna Derecha x2) */}
       <div className="lg:col-span-2 flex flex-col gap-4">
         {/* Phase Controls */}
-        <div className="bento-glass-card p-4 flex flex-wrap gap-4 justify-center items-center border-white/10">
+        <GlowCard color="cyan" className="p-4 flex flex-wrap gap-4 justify-center items-center">
           <span className="text-gray-400 font-bold uppercase tracking-widest text-sm w-full text-center sm:w-auto">Control de Fase:</span>
-          <button onClick={() => setUserPhase('Entrada')} className={`px-4 py-2 rounded-xl font-bold transition-all ${userPhase === 'Entrada' ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.8)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>1. Entrada</button>
-          <button onClick={() => setUserPhase('Distribución')} className={`px-4 py-2 rounded-xl font-bold transition-all ${userPhase === 'Distribución' ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.8)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>2. Scrambling</button>
-          <button onClick={() => setUserPhase('Radiación')} className={`px-4 py-2 rounded-xl font-bold transition-all ${userPhase === 'Radiación' ? 'bg-orange-600 text-white shadow-[0_0_15px_rgba(234,88,12,0.8)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>3. Radiación</button>
-          <button onClick={() => setUserPhase('Salida')} className={`px-4 py-2 rounded-xl font-bold transition-all ${userPhase === 'Salida' ? 'bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.8)]' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>4. Recuperación</button>
-        </div>
+          <GlowButton active={userPhase === 'Entrada'} onClick={() => setUserPhase('Entrada')} color="cyan">1. Entrada</GlowButton>
+          <GlowButton active={userPhase === 'Distribución'} onClick={() => setUserPhase('Distribución')} color="purple">2. Scrambling</GlowButton>
+          <GlowButton active={userPhase === 'Radiación'} onClick={() => setUserPhase('Radiación')} color="orange">3. Radiación</GlowButton>
+          <GlowButton active={userPhase === 'Salida'} onClick={() => setUserPhase('Salida')} color="green">4. Recuperación</GlowButton>
+        </GlowCard>
 
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
@@ -124,10 +119,7 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
       
       {/* Explicación Teórica del Agujero Negro */}
       <div className="lg:col-span-3 mt-4">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-          className="bento-glass-card p-10 border-orange-500/40 group"
-        >
+        <GlowCard color="orange" className="p-10">
           <div className="absolute top-[-50px] right-[-50px] w-64 h-64 bg-orange-600/10 rounded-full blur-[80px] group-hover:bg-orange-500/20 transition-all duration-700 pointer-events-none"></div>
           <AnimatedTitle text="Paradoja de la Información" type="word" className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500 mb-8 flex items-center justify-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)] w-full" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-300 relative z-10">
@@ -146,7 +138,7 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
               </ul>
             </div>
           </div>
-        </motion.div>
+        </GlowCard>
       </div>
 
     </div>

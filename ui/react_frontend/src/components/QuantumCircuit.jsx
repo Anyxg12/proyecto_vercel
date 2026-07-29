@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import AnimatedTitle from './AnimatedTitle';
+import GlowCard from './GlowCard';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -23,7 +24,7 @@ const QuantumCircuit = ({ quantumData }) => {
         </p>
       </motion.div>
 
-      <div className="bento-glass-card p-10 overflow-x-auto relative group border-cyan-500/40">
+      <GlowCard color="cyan" className="p-10 overflow-x-auto relative group">
          <div className="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.03)_1px,transparent_1px)] bg-[size:30px_30px] pointer-events-none group-hover:bg-[size:35px_35px] transition-all duration-1000"></div>
          <div className="min-w-[700px] flex flex-col gap-8 relative z-10">
             
@@ -62,13 +63,13 @@ const QuantumCircuit = ({ quantumData }) => {
             </div>
 
          </div>
-      </div>
+      </GlowCard>
 
       {/* Teoría Cuántica */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12 pb-12">
-        <motion.div variants={itemVariants} className="bento-glass-card p-10 border-purple-500/40 group flex flex-col justify-between">
+        <GlowCard color="purple" className="p-10 flex flex-col justify-between">
           <div>
-            <AnimatedTitle text="Superposición" type="word" className="text-2xl font-bold text-purple-400 mb-6 flex items-center gap-3 uppercase tracking-widest drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]" />
+            <AnimatedTitle text="Superposición" type="shimmer" className="text-2xl font-bold text-purple-400 mb-6 flex items-center gap-3 uppercase tracking-widest drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]" />
             <ul className="text-gray-300 space-y-4 mb-6">
               <motion.li variants={itemVariants} className="flex gap-3"><span className="text-purple-500">»</span> <p><strong>Múltiples Estados:</strong> Un cúbit es una combinación probabilística de 0 y 1.</p></motion.li>
               <motion.li variants={itemVariants} className="flex gap-3"><span className="text-purple-500">»</span> <p><strong>Vectores Visuales:</strong> Arriba de H ves la probabilidad interactiva (50/50).</p></motion.li>
@@ -77,9 +78,9 @@ const QuantumCircuit = ({ quantumData }) => {
           <motion.div variants={itemVariants} className="bg-purple-950/40 p-4 rounded-xl border border-purple-500/30 font-mono text-center text-sm text-purple-200 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
             |ψ⟩ = α|0⟩ + β|1⟩
           </motion.div>
-        </motion.div>
+        </GlowCard>
 
-        <motion.div variants={itemVariants} className="bento-glass-card p-10 border-cyan-500/40 group flex flex-col justify-between">
+        <GlowCard color="cyan" className="p-10 flex flex-col justify-between">
           <div>
             <AnimatedTitle text="Entrelazamiento" type="word" className="text-2xl font-black text-cyan-400 mb-6 flex items-center gap-3 uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]" />
             <ul className="text-gray-300 space-y-4 mb-6">
@@ -90,7 +91,7 @@ const QuantumCircuit = ({ quantumData }) => {
           <motion.div variants={itemVariants} className="bg-cyan-950/40 p-4 rounded-xl border border-cyan-500/30 font-mono text-center text-sm text-cyan-200 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
             |ψ_entrelazado⟩ = (|000⟩ + |111⟩) / √2
           </motion.div>
-        </motion.div>
+        </GlowCard>
       </div>
     </motion.div>
   );

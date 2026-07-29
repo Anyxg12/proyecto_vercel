@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import AnimatedTitle from './AnimatedTitle';
+import GlowCard from './GlowCard';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -15,9 +16,9 @@ const itemVariants = {
 const IrreversibleLogic = ({ logicData, inputA, setInputA, inputB, setInputB }) => {
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="show" className="max-w-5xl mx-auto mt-6 space-y-8 pb-12">
-      <div className="p-10 bento-glass-card border-red-500/50 group">
+      <GlowCard color="orange" className="p-10 group">
         <div className="absolute top-[-50px] right-[-50px] w-64 h-64 bg-red-600/10 rounded-full blur-[80px] group-hover:bg-red-500/20 transition-all duration-700 pointer-events-none"></div>
-        <AnimatedTitle text="Lógica Irreversible (AND)" type="word" className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-500 mb-10 text-center uppercase tracking-widest relative z-10 drop-shadow-[0_0_15px_rgba(255,0,0,0.5)] flex justify-center w-full" />
+        <AnimatedTitle text="Lógica Irreversible (AND)" type="shimmer" className="text-4xl font-black text-transparent mb-10 text-center uppercase tracking-widest relative z-10 flex justify-center w-full" />
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center mb-10 relative z-10">
           <div className="flex flex-col gap-4">
@@ -89,12 +90,12 @@ const IrreversibleLogic = ({ logicData, inputA, setInputA, inputB, setInputB }) 
             <p className="mt-4 text-xs text-center text-gray-400">La información ha colisionado. No se puede revertir.</p>
           </div>
         </div>
-      </div>
+      </GlowCard>
 
       {/* Deducción Lógica */}
-      <motion.div variants={itemVariants} className="bento-glass-card p-10 border-red-500/30 group">
+      <GlowCard color="orange" className="p-10 group">
         <div className="absolute bottom-[-50px] left-[-50px] w-64 h-64 bg-red-600/10 rounded-full blur-[80px] group-hover:bg-red-500/20 transition-all duration-700 pointer-events-none"></div>
-        <AnimatedTitle text="Pérdida de Deducción Lógica" type="word" className="text-3xl font-black text-red-400 mb-8 flex items-center justify-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(255,0,0,0.5)] w-full" />
+        <AnimatedTitle text="Pérdida de Deducción Lógica" type="shimmer" className="text-3xl font-black text-red-400 mb-8 flex items-center justify-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(255,0,0,0.5)] w-full" />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
           <ul className="text-gray-300 space-y-5 text-lg font-medium flex flex-col justify-center">
@@ -127,7 +128,7 @@ const IrreversibleLogic = ({ logicData, inputA, setInputA, inputB, setInputB }) 
             </div>
           </div>
         </div>
-      </motion.div>
+      </GlowCard>
     </motion.div>
   );
 };

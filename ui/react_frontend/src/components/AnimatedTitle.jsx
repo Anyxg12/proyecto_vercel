@@ -30,6 +30,34 @@ const AnimatedTitle = ({ text, className, type = "character", delay = 0 }) => {
     },
   };
 
+  if (type === "shimmer") {
+    return (
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 20 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+        transition={{ duration: 0.8, type: "spring" }}
+        className={`relative inline-block ${className}`}
+      >
+        <div 
+          className="bg-clip-text text-transparent bg-[linear-gradient(110deg,#9333ea,45%,#fff,55%,#06b6d4)]"
+          style={{ 
+            backgroundSize: "200% 100%",
+            animation: "shimmer 3s infinite linear"
+          }}
+        >
+          {text}
+        </div>
+        <style>{`
+          @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+          }
+        `}</style>
+      </motion.div>
+    );
+  }
+
   if (type === "word") {
     return (
       <motion.div
