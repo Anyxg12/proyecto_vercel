@@ -2,10 +2,9 @@ from http.server import BaseHTTPRequestHandler
 import json
 from urllib.parse import parse_qs, urlparse
 
-# Importaciones locales del motor de la aplicación original
-from quantum.engine import ejecutar_motor_cuantico
 from logic.irreversible import generar_tabla_and
 from logic.reversible import generar_tabla_cnot
+from quantum.fast_engine import calcular_metricas_cuanticas
 
 class handler(BaseHTTPRequestHandler):
     """
@@ -60,24 +59,8 @@ class handler(BaseHTTPRequestHandler):
         cnot_control_out = control
         cnot_target_out = target ^ control
 
-        # 3. Motor Cuántico (Qiskit real!)
-        resultado_cuantico = ejecutar_motor_cuantico(theta=theta, phi=phi)
-        
-        fidelidad = resultado_cuantico.fidelidad
-        # Para la entropía, calculamos el promedio de los 3 cúbits en cada estado o usamos las métricas del motor
-        from quantum.metrics import calcular_metricas_sistema
-        metricas_entrada = calcular_metricas_sistema(resultado_cuantico.estado_inicial)
-        metricas_dist = calcular_metricas_sistema(resultado_cuantico.estado_distribuido)
-        metricas_salida = calcular_metricas_sistema(resultado_cuantico.estado_recuperado)
-
-        entropia_in = sum(m.entropia for m in metricas_entrada) / len(metricas_entrada)
-        pureza_in = sum(m.pureza for m in metricas_entrada) / len(metricas_entrada)
-        
-        entropia_dist = sum(m.entropia for m in metricas_dist) / len(metricas_dist)
-        pureza_dist = sum(m.pureza for m in metricas_dist) / len(metricas_dist)
-
-        entropia_out = sum(m.entropia for m in metricas_salida) / len(metricas_salida)
-        pureza_out = sum(m.pureza for m in metricas_salida) / len(metricas_salida)
+        # 3. Motor Cuántico (Simulación Analítica Tensorial para Vercel Serverless)
+        quantum_response = calcular_metricas_cuanticas(theta_grados=theta, phi_grados=phi)
 
         response = {
             "logic": {
@@ -91,23 +74,7 @@ class handler(BaseHTTPRequestHandler):
                     "reversible": True
                 }
             },
-            "quantum": {
-                "theta": theta,
-                "phi": phi,
-                "fidelidad": fidelidad,
-                "entrada": {
-                    "entropia": entropia_in,
-                    "pureza": pureza_in
-                },
-                "distribucion": {
-                    "entropia": entropia_dist,
-                    "pureza": pureza_dist
-                },
-                "salida": {
-                    "entropia": entropia_out,
-                    "pureza": pureza_out
-                }
-            }
+            "quantum": quantum_response
         }
         
         self.wfile.write(json.dumps(response).encode('utf-8'))

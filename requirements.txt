@@ -1,1 +1,2 @@
-qiskit==1.1.1
+# Zero dependencies for Vercel Serverless
+# The quantum engine now uses analytical tensor math built into Python!
