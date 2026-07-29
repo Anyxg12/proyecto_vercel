@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React 18 Scroll Parallax Quantum HUD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <!-- React 18, ReactDOM, Babel, Framer Motion & Lucide Icons -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    html, body {
+      background: transparent;
+      font-family: 'Outfit', sans-serif;
+      color: #ffffff;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #030712; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #c084fc, #00f3ff); border-radius: 999px; }
+
+    /* Layout Bento Grid Parallax Shell */
+    .bento-parallax-wrapper {
+      position: relative;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.2rem;
+    }
+
+    /* Targetas Bento Glassmorphism con Paralaje */
+    .parallax-card {
+      position: relative;
+      border-radius: 30px;
+      border: 2px solid rgba(0, 243, 255, 0.40);
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(6, 10, 26, 0.98));
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.65), inset 0 0 40px rgba(0, 243, 255, 0.15);
+      backdrop-filter: blur(25px);
+      padding: 2.4rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      will-change: transform, opacity;
+    }
+
+    .parallax-card:hover {
+      border-color: #00f3ff;
+      box-shadow: 0 35px 95px rgba(0, 0, 0, 0.75), 0 0 50px rgba(0, 243, 255, 0.35);
+    }
+
+    .hero-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid #00f3ff;
+      background: rgba(0, 243, 255, 0.16);
+      color: #00f3ff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      box-shadow: 0 0 22px rgba(0, 243, 255, 0.35);
+    }
+
+    .hero-badge-purple {
+      border-color: #c084fc;
+      background: rgba(192, 132, 252, 0.16);
+      color: #c084fc;
+      box-shadow: 0 0 22px rgba(192, 132, 252, 0.35);
+    }
+
+    .hero-title-scroll {
+      font-size: clamp(2.4rem, 5.2vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1.08;
+      background: linear-gradient(110deg, #ffffff 15%, #c084fc 55%, #00f3ff 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 0 35px rgba(0, 243, 255, 0.30));
+      transform-origin: left center;
+    }
+
+    .hero-desc {
+      color: #cbd5e1;
+      font-size: 1.15rem;
+      line-height: 1.75;
+      max-width: 950px;
+      margin-bottom: 2rem;
+    }
+
+    /* Grid de tarjetas dinámicas con Scroll Trigger */
+    .cards-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.4rem;
+    }
+
+    .grid-bento-card {
+      padding: 1.5rem;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(10, 15, 34, 0.85);
+      backdrop-filter: blur(20px);
+      transition: all 0.3s ease;
+    }
+
+    .grid-bento-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      border-color: #00f3ff;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(0, 243, 255, 0.3);
+    }
+
+    .card-tech-label {
+      color: #94a3b8;
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-tech-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.7rem;
+      font-weight: 850;
+      color: #ffffff;
+    }
+
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      height: 170px;
+      margin-top: 1.4rem;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 243, 255, 0.35);
+      background: rgba(3, 6, 18, 0.90);
+    }
+
+    @media (max-width: 900px) {
+      .cards-grid-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useEffect, useRef, useState } = React;
+    const { motion, useScroll, useTransform } = Motion;
+
+    // Conector bidireccional con Streamlit
+    function sendMessageToStreamlitClient(type, data) {
+      const outData = Object.assign({
+        isStreamlitMessage: true,
+        type: type,
+      }, data);
+      window.parent.postMessage(outData, "*");
+    }
+
+    // Canvas de Partículas Interactivo
+    const BitParticleCanvas = ({ color = "#00f3ff" }) => {
+      const canvasRef = useRef(null);
+
+      useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let animId;
+
+        const particles = [];
+        for (let i = 0; i < 55; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 2.5 + 1,
+            speed: Math.random() * 1.8 + 0.6,
+            opacity: Math.random() * 0.75 + 0.25
+          });
+        }
+
+        const render = () => {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach(p => {
+            p.x += p.speed;
+            if (p.x > canvas.width) p.x = 0;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.globalAlpha = p.opacity;
+            ctx.fill();
+          });
+
+          ctx.beginPath();
+          const time = Date.now() * 0.003;
+          for (let x = 0; x < canvas.width; x++) {
+            const y = canvas.height / 2 + Math.sin(x * 0.02 + time) * 20;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.strokeStyle = color;
+          ctx.globalAlpha = 0.65;
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+
+          animId = requestAnimationFrame(render);
+        };
+
+        render();
+        return () => cancelAnimationFrame(animId);
+      }, [color]);
+
+      return (
+        <div className="canvas-container">
+          <canvas ref={canvasRef} width={700} height={170} style={{ width: '100%', height: '100%' }} />
+        </div>
+      );
+    };
+
+    // Componente Principal con Framer Motion Scroll Trigger & Parallax
+    const FramerMotionParallaxApp = () => {
+      const [args, setArgs] = useState({
+        titulo: "Preservación de Información y Lógica Reversible",
+        tipoCompuerta: "CNOT",
+        entrada: "(1, 0)",
+        salida: "(1, 1)",
+        fidelidad: 100.0,
+        esReversible: true
+      });
+
+      // Captura del Scroll Global para animaciones Parallax con Framer Motion
+      const { scrollYProgress } = useScroll();
+
+      // Transformaciones reactivas al Scroll: Escalado suave, posición Y, Opacidad e Intensidad Neón
+      const heroScale = useTransform(scrollYProgress, [0, 0.4], [0.95, 1.12]);
+      const titleScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.18]);
+      const cardY1 = useTransform(scrollYProgress, [0, 0.4], [30, -10]);
+      const cardY2 = useTransform(scrollYProgress, [0.1, 0.6], [50, -15]);
+      const cardY3 = useTransform(scrollYProgress, [0.2, 0.8], [70, -20]);
+      const cardOpacity = useTransform(scrollYProgress, [0, 0.3], [0.75, 1]);
+      const borderGlowInt = useTransform(scrollYProgress, [0, 0.5, 1], ["rgba(0, 243, 255, 0.4)", "rgba(192, 132, 252, 0.8)", "rgba(74, 222, 128, 0.9)"]);
+
+      useEffect(() => {
+        sendMessageToStreamlitClient("streamlit:componentReady", { apiVersion: 1 });
+        sendMessageToStreamlitClient("streamlit:setFrameHeight", { height: 1100 });
+
+        const onData = (event) => {
+          if (event.data && event.data.type === "streamlit:render") {
+            if (event.data.args) {
+              setArgs(prev => ({ ...prev, ...event.data.args }));
+            }
+          }
+        };
+
+        window.addEventListener("message", onData);
+        return () => window.removeEventListener("message", onData);
+      }, []);
+
+      useEffect(() => {
+        if (window.lucide) window.lucide.createIcons();
+      }, [args]);
+
+      return (
+        <div className="bento-parallax-wrapper">
+          
+          {/* Hero Section con Scroll Trigger Scaling */}
+          <motion.div
+            className="parallax-card"
+            style={{ scale: heroScale, opacity: cardOpacity, borderColor: borderGlowInt }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+          >
+            <div className="hero-badge-row">
+              <span className="hero-badge">
+                <i data-lucide="atom" style={{ width: 16, height: 16 }} />
+                FRAMER MOTION SCROLL ENGINE
+              </span>
+              <span className="hero-badge hero-badge-purple">
+                <i data-lucide="sparkles" style={{ width: 16, height: 16 }} />
+                QISKIT PARALLAX 2026
+              </span>
+            </div>
+
+            <motion.h1
+              className="hero-title-scroll"
+              style={{ scale: titleScale }}
+            >
+              {args.titulo}
+            </motion.h1>
+
+            <p className="hero-desc">
+              Explora en tiempo real cómo la información se destruye irreversiblemente en la lógica clásica (AND) y se conserva al 100% en la lógica reversible (CNOT) y la computación cuántica.
+            </p>
+
+            <div className="cards-grid-3">
+              <motion.div className="grid-bento-card" style={{ y: cardY1 }}>
+                <div className="card-tech-label" style={{ color: '#38bdf8' }}>
+                  <i data-lucide="image-minus" style={{ width: 18, height: 18 }} />
+                  1. Compresión HD (AND)
+                </div>
+                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.8rem' }}>Al comprimir a 10x10 px, los detalles se mezclan y destruyen el origen.</p>
+                <div className="card-tech-value" style={{ color: '#38bdf8', fontSize: '1.2rem' }}>Irreversible (0%)</div>
+              </motion.div>
+
+              <motion.div className="grid-bento-card" style={{ y: cardY2 }}>
+                <div className="card-tech-label" style={{ color: '#c084fc' }}>
+                  <i data-lucide="file-archive" style={{ width: 18, height: 18 }} />
+                  2. Archivos ZIP (CNOT)
+                </div>
+                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.8rem' }}>Conservación exacta bit a bit permitiendo restauración 1:1.</p>
+                <div className="card-tech-value" style={{ color: '#c084fc', fontSize: '1.2rem' }}>Reversible (100%)</div>
+              </motion.div>
+
+              <motion.div className="grid-bento-card" style={{ y: cardY3 }}>
+                <div className="card-tech-label" style={{ color: '#4ade80' }}>
+                  <i data-lucide="gamepad-2" style={{ width: 18, height: 18 }} />
+                  3. Física & IA (Cuántica)
+                </div>
+                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.8rem' }}>Simulación simultánea masiva sin pérdida de información.</p>
+                <div className="card-tech-value" style={{ color: '#4ade80', fontSize: '1.2rem' }}>Conservación Total</div>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Gate Node Section con Animación Independiente */}
+          <motion.div
+            className="parallax-card"
+            style={{ y: cardY2, opacity: cardOpacity }}
+            whileHover={{ scale: 1.015 }}
+            transition={{ type: "spring", stiffness: 250 }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.4rem', borderBottom: '1px solid rgba(255,255,255,0.12)', paddingBottom: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                <i data-lucide="cpu" style={{ color: '#00f3ff', width: 28, height: 28 }} />
+                <h2 style={{ fontSize: '1.5rem', fontWeight: 850, color: '#ffffff' }}>
+                  Nodo Interactivo ({args.tipoCompuerta})
+                </h2>
+              </div>
+              <span className="hero-badge" style={{ borderColor: args.esReversible ? '#c084fc' : '#00f3ff', color: args.esReversible ? '#c084fc' : '#00f3ff' }}>
+                {args.esReversible ? 'BIYECTIVA 1:1' : 'NO INYECTIVA'}
+              </span>
+            </div>
+
+            <div className="cards-grid-3" style={{ marginBottom: '1.4rem' }}>
+              <div className="grid-bento-card">
+                <div className="card-tech-label"><i data-lucide="layers" style={{ width: 16, height: 16 }} /> Transformación de Bits</div>
+                <div className="card-tech-value">{args.entrada} &rarr; {args.salida}</div>
+              </div>
+
+              <div className="grid-bento-card">
+                <div className="card-tech-label"><i data-lucide="shield-check" style={{ width: 16, height: 16 }} /> Propiedad Lógica</div>
+                <div className="card-tech-value" style={{ color: args.esReversible ? '#4ade80' : '#00f3ff' }}>
+                  {args.esReversible ? 'Reversible (100%)' : 'Irreversible'}
+                </div>
+              </div>
+
+              <div className="grid-bento-card">
+                <div className="card-tech-label"><i data-lucide="zap" style={{ width: 16, height: 16 }} /> Fidelidad de Estado</div>
+                <div className="card-tech-value">{Number(args.fidelidad).toFixed(1)}% Intacta</div>
+              </div>
+            </div>
+
+            <BitParticleCanvas color={args.esReversible ? '#c084fc' : '#00f3ff'} />
+          </motion.div>
+
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<FramerMotionParallaxApp />);
+  </script>
+</body>
+</html>

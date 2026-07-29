@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cyan: #00f3ff;
+  --purple: #c084fc;
+  --emerald: #4ade80;
+  --bg-void: #030712;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-void);
+  font-family: 'Outfit', sans-serif;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+/* Cyber Quantum Grid Backdrop */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0, 243, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 243, 255, 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.65;
+}
+
+/* Bento Card Glassmorphism */
+.bento-glass-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 26px;
+  border: 1px solid rgba(0, 243, 255, 0.35);
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.92), rgba(6, 10, 26, 0.96));
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), inset 0 0 30px rgba(0, 243, 255, 0.12);
+  backdrop-filter: blur(25px);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bento-glass-card:hover {
+  border-color: rgba(0, 243, 255, 0.75);
+  box-shadow: 0 30px 85px rgba(0, 0, 0, 0.65), 0 0 40px rgba(0, 243, 255, 0.3);
+}
+
+.glow-text-cyan {
+  background: linear-gradient(110deg, #ffffff 20%, #c084fc 60%, #00f3ff 95%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 30px rgba(0, 243, 255, 0.3));
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #030712;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #c084fc, #00f3ff);
+  border-radius: 999px;
+}
