@@ -266,7 +266,7 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
       <div style={{ position: 'absolute', inset: 0, zIndex: 10, pointerEvents: 'none', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '24px 28px' }}>
         
         {/* HUD Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(8, 12, 28, 0.78)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '20px', padding: '14px 24px', boxShadow: '0 12px 45px rgba(0, 0, 0, 0.65)' }}>
+        <div className="bento-glass-card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 24px', border: '1px solid rgba(255, 255, 255, 0.15)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#38bdf8', boxShadow: '0 0 14px #38bdf8, 0 0 28px #38bdf8' }} />
             <div>

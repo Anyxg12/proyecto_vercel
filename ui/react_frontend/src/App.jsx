@@ -54,11 +54,34 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#02040a] text-white flex flex-col font-sans relative overflow-hidden">
-      {/* Sci-Fi Grid Background */}
-      <div className="absolute inset-0 pointer-events-none opacity-20 z-0" 
-           style={{ backgroundImage: 'linear-gradient(#22d3ee 1px, transparent 1px), linear-gradient(90deg, #22d3ee 1px, transparent 1px)', backgroundSize: '40px 40px', transform: 'perspective(500px) rotateX(60deg) scale(2.5) translateY(-50px)' }}>
+      {/* Sci-Fi Grid Background Animado */}
+      <div className="absolute inset-0 pointer-events-none opacity-40 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#150935] via-[#02040a] to-[#02040a]"></div>
+      
+      {/* Floating Glowing Orbs for extreme visual impact */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className={`absolute rounded-full blur-[80px] opacity-40 ${i % 2 === 0 ? 'bg-cyan-500' : 'bg-purple-500'}`}
+            style={{
+              width: Math.random() * 300 + 100 + 'px',
+              height: Math.random() * 300 + 100 + 'px',
+              left: Math.random() * 100 + '%',
+              top: Math.random() * 100 + '%',
+            }}
+            animate={{
+              x: [0, Math.random() * 200 - 100, 0],
+              y: [0, Math.random() * 200 - 100, 0],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: Math.random() * 10 + 10,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+        ))}
       </div>
-      <div className="absolute inset-0 pointer-events-none z-0 bg-gradient-to-t from-[#02040a] via-transparent to-[#02040a]"></div>
 
       <div className="relative z-10 flex flex-col h-full">
         <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />

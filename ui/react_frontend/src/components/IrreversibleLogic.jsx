@@ -4,9 +4,9 @@ import { motion } from 'framer-motion';
 const IrreversibleLogic = ({ logicData, inputA, setInputA, inputB, setInputB }) => {
   return (
     <div className="max-w-5xl mx-auto mt-6 space-y-8 pb-12">
-      <div className="p-8 bg-[#02040a]/80 backdrop-blur-2xl border border-red-500/40 rounded-3xl shadow-[0_0_50px_rgba(239,68,68,0.15)] relative overflow-hidden group">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/5 rounded-full blur-3xl group-hover:bg-red-500/10 transition-all pointer-events-none"></div>
-        <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-500 mb-8 text-center uppercase tracking-widest relative z-10">Lógica Irreversible (AND)</h2>
+      <div className="p-10 bento-glass-card border-red-500/50 group">
+        <div className="absolute top-[-50px] right-[-50px] w-64 h-64 bg-red-600/10 rounded-full blur-[80px] group-hover:bg-red-500/20 transition-all duration-700 pointer-events-none"></div>
+        <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-500 mb-10 text-center uppercase tracking-widest relative z-10 drop-shadow-[0_0_15px_rgba(255,0,0,0.5)]">Física Clásica (AND)</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center mb-10 relative z-10">
           <div className="flex flex-col gap-4">
@@ -26,13 +26,21 @@ const IrreversibleLogic = ({ logicData, inputA, setInputA, inputB, setInputB }) 
             </div>
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex justify-center relative">
             <motion.div 
-              animate={{ rotate: [0, 5, -5, 0] }}
-              transition={{ repeat: Infinity, duration: 4 }}
-              className="w-32 h-32 bg-[#02040a] rounded-2xl flex items-center justify-center border border-red-500 shadow-[0_0_30px_rgba(239,68,68,0.6),inset_0_0_20px_rgba(239,68,68,0.3)]"
+              animate={{ scale: [1, 1.05, 1], boxShadow: ["0 0 20px rgba(239,68,68,0.5)", "0 0 40px rgba(239,68,68,0.8)", "0 0 20px rgba(239,68,68,0.5)"] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+              className="w-36 h-36 bg-[#0a0202] rounded-3xl flex items-center justify-center border-2 border-red-500 z-10"
             >
-              <span className="text-3xl font-black text-red-500 tracking-widest drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]">AND</span>
+              <span className="text-4xl font-black text-red-500 tracking-widest drop-shadow-[0_0_15px_rgba(255,0,0,1)]">AND</span>
+            </motion.div>
+            {/* Animación de bits perdiéndose */}
+            <motion.div 
+              animate={{ y: [0, 50], opacity: [1, 0], scale: [1, 0.5] }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "easeOut" }}
+              className="absolute bottom-[-40px] text-red-500 font-bold text-xl drop-shadow-[0_0_10px_rgba(255,0,0,1)] z-0"
+            >
+              ↓ bit perdido
             </motion.div>
           </div>
 
@@ -55,27 +63,28 @@ const IrreversibleLogic = ({ logicData, inputA, setInputA, inputB, setInputB }) 
       {/* Teoría de Landauer */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-        className="bg-[#02040a]/60 border border-red-500/20 rounded-3xl p-8 shadow-[0_0_20px_rgba(239,68,68,0.1)]"
+        className="bento-glass-card p-10 border-red-500/30 group"
       >
-        <h3 className="text-2xl font-bold text-red-400 mb-6 flex items-center gap-3 uppercase tracking-wider">
-          <span className="text-3xl">📉</span> Principio de Landauer
+        <div className="absolute bottom-[-50px] left-[-50px] w-64 h-64 bg-red-600/10 rounded-full blur-[80px] group-hover:bg-red-500/20 transition-all duration-700 pointer-events-none"></div>
+        <h3 className="text-3xl font-black text-red-400 mb-8 flex items-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(255,0,0,0.5)]">
+          <span className="text-4xl">📉</span> Principio de Landauer
         </h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <ul className="text-gray-300 space-y-4">
-            <li className="flex gap-3"><span className="text-red-500">»</span> <strong>Aniquilación de Datos:</strong> Ingresan 2 bits, sale 1. El bit restante se destruye irremediablemente.</li>
-            <li className="flex gap-3"><span className="text-red-500">»</span> <strong>Borrar = Calor:</strong> Rolf Landauer demostró en 1961 que este borrado lógico aumenta la entropía física.</li>
-            <li className="flex gap-3"><span className="text-red-500">»</span> <strong>El Límite Físico:</strong> El calor disipado limita la velocidad de los chips modernos.</li>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
+          <ul className="text-gray-300 space-y-5 text-lg font-medium">
+            <li className="flex gap-4 items-start"><span className="text-red-500 font-bold text-2xl">»</span> <p><strong>Aniquilación de Datos:</strong> Ingresan 2 bits, sale 1. El bit restante se destruye en el procesador.</p></li>
+            <li className="flex gap-4 items-start"><span className="text-red-500 font-bold text-2xl">»</span> <p><strong>Borrar = Calor:</strong> Rolf Landauer demostró que este "borrado" aumenta la entropía física del universo.</p></li>
+            <li className="flex gap-4 items-start"><span className="text-red-500 font-bold text-2xl">»</span> <p><strong>El Límite Físico:</strong> El calor disipado es lo que impide que tu computadora vaya a un millón de gigahercios.</p></li>
           </ul>
 
           <div className="flex flex-col justify-center">
-            <div className="bg-red-950/40 border border-red-500/30 p-6 rounded-xl shadow-[inset_0_0_20px_rgba(239,68,68,0.1)]">
-              <span className="text-xs uppercase text-red-400 tracking-widest block mb-2">Ecuación de Disipación Térmica</span>
-              <p className="font-mono text-xl text-white tracking-widest text-center">
+            <div className="bg-red-950/40 border border-red-500/50 p-8 rounded-2xl shadow-[inset_0_0_30px_rgba(255,0,0,0.15)] relative overflow-hidden group-hover:shadow-[0_0_40px_rgba(255,0,0,0.2)] transition-all">
+              <span className="text-sm uppercase text-red-400 tracking-widest block mb-4">La Ecuación del Calor Fatal</span>
+              <p className="font-mono text-3xl font-bold text-white tracking-widest text-center glow-text-cyan">
                 E = k_B · T · ln(2)
               </p>
-              <p className="text-xs text-gray-500 mt-4 text-center">
-                (Constante de Boltzmann × Temperatura × logaritmo natural de 2)
+              <p className="text-sm text-gray-400 mt-6 text-center">
+                Cada vez que se borra un bit, el universo se calienta exactamente esta cantidad.
               </p>
             </div>
           </div>

@@ -8,7 +8,7 @@
   --cyan: #00f3ff;
   --purple: #c084fc;
   --emerald: #4ade80;
-  --bg-void: #030712;
+  --bg-void: #02040a;
 }
 
 body {
@@ -18,9 +18,10 @@ body {
   font-family: 'Outfit', sans-serif;
   color: #ffffff;
   overflow-x: hidden;
+  background: radial-gradient(circle at 50% 0%, #150935 0%, #02040a 60%);
 }
 
-/* Cyber Quantum Grid Backdrop */
+/* Cyber Quantum Grid Backdrop con Animación Fluida */
 body::before {
   content: "";
   position: fixed;
@@ -28,43 +29,94 @@ body::before {
   z-index: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(0, 243, 255, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 243, 255, 0.06) 1px, transparent 1px);
-  background-size: 40px 40px;
-  opacity: 0.65;
+    linear-gradient(rgba(0, 243, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 243, 255, 0.04) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.8;
+  transform: perspective(600px) rotateX(60deg) scale(2.5) translateY(0);
+  animation: gridMove 20s linear infinite;
 }
 
-/* Bento Card Glassmorphism */
+@keyframes gridMove {
+  0% { transform: perspective(600px) rotateX(60deg) scale(2.5) translateY(0); }
+  100% { transform: perspective(600px) rotateX(60deg) scale(2.5) translateY(50px); }
+}
+
+/* Glassmorphism Premium */
 .bento-glass-card {
   position: relative;
   overflow: hidden;
   border-radius: 26px;
-  border: 1px solid rgba(0, 243, 255, 0.35);
-  background: linear-gradient(145deg, rgba(15, 23, 42, 0.92), rgba(6, 10, 26, 0.96));
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), inset 0 0 30px rgba(0, 243, 255, 0.12);
-  backdrop-filter: blur(25px);
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(145deg, rgba(12, 16, 30, 0.7), rgba(4, 6, 16, 0.9));
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), inset 0 0 40px rgba(192, 132, 252, 0.05);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.bento-glass-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+  transform: skewX(-20deg);
+  transition: all 0.5s;
 }
 
 .bento-glass-card:hover {
-  border-color: rgba(0, 243, 255, 0.75);
-  box-shadow: 0 30px 85px rgba(0, 0, 0, 0.65), 0 0 40px rgba(0, 243, 255, 0.3);
+  border-color: rgba(0, 243, 255, 0.5);
+  box-shadow: 0 40px 80px rgba(0, 243, 255, 0.15), inset 0 0 60px rgba(0, 243, 255, 0.1);
+  transform: translateY(-5px);
 }
 
+.bento-glass-card:hover::before {
+  left: 200%;
+  transition: all 0.7s ease-in-out;
+}
+
+/* Resplandor Neón de Texto */
 .glow-text-cyan {
-  background: linear-gradient(110deg, #ffffff 20%, #c084fc 60%, #00f3ff 95%);
+  background: linear-gradient(110deg, #ffffff 20%, #c084fc 50%, #00f3ff 90%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 30px rgba(0, 243, 255, 0.3));
+  filter: drop-shadow(0 0 25px rgba(0, 243, 255, 0.4));
 }
 
+.glow-text-purple {
+  background: linear-gradient(110deg, #ffffff 20%, #ff7eb3 50%, #c084fc 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 25px rgba(192, 132, 252, 0.4));
+}
+
+/* Efectos de pulso y respiración para compuertas */
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 15px rgba(34, 211, 238, 0.3); }
+  50% { box-shadow: 0 0 35px rgba(34, 211, 238, 0.8); }
+}
+
+@keyframes pulse-purple {
+  0%, 100% { box-shadow: 0 0 15px rgba(168, 85, 247, 0.3); }
+  50% { box-shadow: 0 0 35px rgba(168, 85, 247, 0.8); }
+}
+
+.gate-cyan { animation: pulse-cyan 3s infinite; }
+.gate-purple { animation: pulse-purple 3.5s infinite; }
+
+/* Scrollbar futurista */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #030712;
+  background: #02040a;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #c084fc, #00f3ff);
   border-radius: 999px;
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+}
+.custom-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
 }

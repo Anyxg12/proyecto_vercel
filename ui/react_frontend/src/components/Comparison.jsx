@@ -4,19 +4,19 @@ import { motion } from 'framer-motion';
 const Comparison = () => {
   return (
     <div className="max-w-6xl mx-auto mt-10">
-      <h2 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-magenta-500 mb-10 tracking-widest uppercase drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]">
-        Comparación Final
+      <h2 className="text-5xl font-black text-center mb-12 tracking-widest uppercase">
+        <span className="glow-text-purple">Comparación Final</span>
       </h2>
 
       {/* Tabla Comparativa Robusta */}
-      <div className="overflow-x-auto bg-[#02040a]/80 backdrop-blur-2xl border border-cyan-500/30 rounded-3xl shadow-[0_0_40px_rgba(34,211,238,0.1)] mb-12 relative">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 via-cyan-500 to-purple-500 opacity-50"></div>
+      <div className="bento-glass-card overflow-x-auto mb-12 relative p-1 group">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 via-cyan-500 to-purple-500 opacity-80 group-hover:opacity-100 transition-opacity"></div>
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-white/5 border-b border-white/10 text-gray-300">
               <th className="p-6 font-bold uppercase tracking-wider text-sm">Característica</th>
-              <th className="p-6 font-bold uppercase tracking-wider text-sm text-red-400">Lógica Irreversible (AND)</th>
-              <th className="p-6 font-bold uppercase tracking-wider text-sm text-cyan-400">Lógica Reversible (CNOT)</th>
+              <th className="p-6 font-bold uppercase tracking-wider text-sm text-red-400">Física Clásica (AND)</th>
+              <th className="p-6 font-bold uppercase tracking-wider text-sm text-cyan-400">Física Cuántica (CNOT)</th>
               <th className="p-6 font-bold uppercase tracking-wider text-sm text-purple-400">Cómputo Cuántico</th>
             </tr>
           </thead>
@@ -52,10 +52,10 @@ const Comparison = () => {
       {/* Conclusiones Finales */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-        className="bg-[#02040a]/80 backdrop-blur-2xl border border-purple-500/30 rounded-3xl p-8 lg:p-12 text-center shadow-[inset_0_0_50px_rgba(168,85,247,0.1)] relative overflow-hidden"
+        className="bento-glass-card p-8 lg:p-12 text-center relative overflow-hidden group border-purple-500/40"
       >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/5 rounded-full blur-[100px] pointer-events-none"></div>
-        <h3 className="text-2xl lg:text-3xl font-bold text-white mb-8 tracking-wider uppercase relative z-10">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none group-hover:bg-purple-500/20 transition-all duration-700"></div>
+        <h3 className="text-3xl lg:text-4xl font-black mb-10 tracking-widest uppercase relative z-10 glow-text-cyan">
           Impacto en el Futuro del Software
         </h3>
         

@@ -10,10 +10,10 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
       <div className="lg:col-span-1 space-y-6">
         <motion.div 
           initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-          className="bg-[#02040a]/80 backdrop-blur-2xl border border-purple-500/40 rounded-3xl p-6 shadow-[0_0_30px_rgba(168,85,247,0.15)] relative overflow-hidden group"
+          className="bento-glass-card p-6 group border-purple-500/40"
         >
-          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl group-hover:bg-purple-500/20 transition-all pointer-events-none"></div>
-          <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-magenta-500 mb-6 uppercase tracking-widest relative z-10">Parámetros (Qiskit)</h3>
+          <div className="absolute top-[-50px] right-[-50px] w-48 h-48 bg-purple-500/10 rounded-full blur-[60px] group-hover:bg-purple-500/20 transition-all pointer-events-none"></div>
+          <h3 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-magenta-500 mb-6 uppercase tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]">Parámetros (Qiskit)</h3>
           
           <div className="mb-6">
             <div className="flex justify-between text-sm mb-2">
@@ -44,12 +44,12 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
         {/* Real-time Metrics Card (4 Etapas) */}
         <motion.div 
           initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
-          className="bg-[#02040a]/80 backdrop-blur-2xl border border-cyan-500/40 rounded-3xl p-6 shadow-[0_0_30px_rgba(34,211,238,0.15)] relative overflow-hidden group"
+          className="bento-glass-card p-6 group border-cyan-500/40"
         >
-          <div className="absolute top-0 left-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-all pointer-events-none"></div>
+          <div className="absolute top-[-50px] left-[-50px] w-48 h-48 bg-cyan-500/10 rounded-full blur-[60px] group-hover:bg-cyan-500/20 transition-all pointer-events-none"></div>
           <div className="flex justify-between items-center mb-6 relative z-10">
-            <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 uppercase tracking-widest">Flujo de Datos</h3>
-            <div className="bg-green-950/40 px-3 py-1 rounded-full border border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.3)]">
+            <h3 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">Flujo de Datos</h3>
+            <div className="bg-green-950/40 px-3 py-1 rounded-full border border-green-500/50 shadow-[0_0_20px_rgba(34,197,94,0.5)] animate-pulse">
               <span className="text-xs text-green-400 font-bold uppercase tracking-wider">Fidelidad: {quantumData ? (quantumData.fidelidad * 100).toFixed(2) : '100.00'}%</span>
             </div>
           </div>
@@ -116,10 +116,11 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
       <div className="lg:col-span-3 mt-4">
         <motion.div 
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-          className="bg-[#02040a]/60 border border-orange-500/30 rounded-3xl p-8 shadow-[inset_0_0_30px_rgba(249,115,22,0.1)] relative overflow-hidden"
+          className="bento-glass-card p-10 border-orange-500/40 group"
         >
-          <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500 mb-6 flex items-center gap-3 uppercase tracking-widest relative z-10">
-            <span className="text-3xl">🌌</span> Paradoja de la Información
+          <div className="absolute top-[-50px] right-[-50px] w-64 h-64 bg-orange-600/10 rounded-full blur-[80px] group-hover:bg-orange-500/20 transition-all duration-700 pointer-events-none"></div>
+          <h3 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500 mb-8 flex items-center gap-4 uppercase tracking-widest relative z-10 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)]">
+            <span className="text-5xl">🌌</span> Paradoja de la Información
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-300 relative z-10">
             <ul className="space-y-4">
