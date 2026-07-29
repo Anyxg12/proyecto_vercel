@@ -138,6 +138,37 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
     }));
     scene.add(accretionDisc);
 
+    // 2.5 Flujo de Información Explícito (Qubits Entrando/Saliendo)
+    const infoCount = 2000;
+    const infoGeo = new THREE.BufferGeometry();
+    const infoPos = new Float32Array(infoCount * 3);
+    const infoColors = new Float32Array(infoCount * 3);
+    const infoData = [];
+
+    for (let i = 0; i < infoCount; i++) {
+        infoData.push({
+            x: -100 + Math.random() * 200,
+            y: (Math.random() - 0.5) * 10,
+            z: (Math.random() - 0.5) * 10,
+            speed: 0.5 + Math.random() * 1.5,
+            angle: Math.random() * Math.PI * 2,
+            r: 12 + Math.random() * 15
+        });
+        infoPos[i*3] = 0; infoPos[i*3+1] = 0; infoPos[i*3+2] = 0;
+        
+        infoColors[i*3] = 1.0; infoColors[i*3+1] = 1.0; infoColors[i*3+2] = 1.0;
+    }
+    infoGeo.setAttribute('position', new THREE.BufferAttribute(infoPos, 3));
+    infoGeo.setAttribute('color', new THREE.BufferAttribute(infoColors, 3));
+    
+    // Un material súper brillante para que destaquen sobre el disco
+    const infoMaterial = new THREE.PointsMaterial({
+        size: 2.5, map: particleTexture, vertexColors: true, transparent: true,
+        opacity: 1.0, blending: THREE.AdditiveBlending, depthWrite: false
+    });
+    const infoStream = new THREE.Points(infoGeo, infoMaterial);
+    scene.add(infoStream);
+
     // 3. Jets Polares Relativistas
     const jetCount = 10000;
     const jetGeo = new THREE.BufferGeometry();
@@ -218,6 +249,64 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
         }
         accretionDisc.geometry.attributes.position.needsUpdate = true;
         
+        // Flujo de Información Lógica (El viaje del Qubit)
+        const iPositions = infoStream.geometry.attributes.position.array;
+        const iColors = infoStream.geometry.attributes.color.array;
+        
+        for (let i = 0; i < infoCount; i++) {
+            const data = infoData[i];
+            let targetColor = new THREE.Color(0xffffff);
+
+            if (etapa === 'Entrada') {
+                // Entrando por la izquierda hacia el agujero negro
+                data.x += data.speed;
+                // Si llega al centro, se reinicia a la izquierda
+                if (data.x > -12) {
+                    data.x = -120 - Math.random() * 50;
+                    data.y = (Math.random() - 0.5) * 4;
+                    data.z = (Math.random() - 0.5) * 4;
+                }
+                iPositions[i*3] = data.x;
+                iPositions[i*3+1] = data.y;
+                iPositions[i*3+2] = data.z;
+                targetColor.setHex(0x38bdf8); // Cyan claro
+                
+            } else if (etapa === 'Distribución' || etapa === 'Radiación') {
+                // Scrambling: orbitando caóticamente cerca del núcleo
+                data.angle -= data.speed * 0.05;
+                // Pequeña fluctuación caótica
+                data.r += (Math.random() - 0.5) * 0.5;
+                if (data.r < 11.5) data.r = 11.5;
+                if (data.r > 25) data.r = 25;
+                
+                iPositions[i*3] = data.r * Math.cos(data.angle);
+                iPositions[i*3+1] = (Math.random() - 0.5) * 6; // Dispersión vertical
+                iPositions[i*3+2] = data.r * Math.sin(data.angle);
+                
+                if (etapa === 'Distribución') targetColor.setHex(0xc084fc); // Púrpura scrambling
+                if (etapa === 'Radiación') targetColor.setHex(0xfacc15); // Amarillo radiación
+                
+            } else if (etapa === 'Salida') {
+                // Saliendo por la derecha (para el otro lado)
+                data.x += data.speed * 1.5; // Salen rápido
+                if (data.x > 120 || data.x < 12) { // Si están muy lejos o acaban de cambiar de fase, reiniciar en el borde derecho
+                    data.x = 12 + Math.random() * 10;
+                    data.y = (Math.random() - 0.5) * 4;
+                    data.z = (Math.random() - 0.5) * 4;
+                }
+                iPositions[i*3] = data.x;
+                iPositions[i*3+1] = data.y;
+                iPositions[i*3+2] = data.z;
+                targetColor.setHex(0x4ade80); // Verde recuperación
+            }
+
+            iColors[i*3] = targetColor.r;
+            iColors[i*3+1] = targetColor.g;
+            iColors[i*3+2] = targetColor.b;
+        }
+        infoStream.geometry.attributes.position.needsUpdate = true;
+        infoStream.geometry.attributes.color.needsUpdate = true;
+
         // Mover polar jets si están activos
         if (jetActive) {
             const jPositions = polarJets.geometry.attributes.position.array;
@@ -258,6 +347,8 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
       diskGeo.dispose();
       jetGeo.dispose();
       starGeo.dispose();
+      infoGeo.dispose();
+      infoMaterial.dispose();
     };
   }, [etapa, theta, phi]);
 
