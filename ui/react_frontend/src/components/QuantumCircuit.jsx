@@ -129,6 +129,7 @@ const Gate = ({ color, label, showVector }) => {
       {label}
     </motion.div>
   </div>
-);
+  );
+};
 
 export default QuantumCircuit;

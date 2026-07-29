@@ -20,161 +20,111 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
     scene.fog = new THREE.FogExp2(0x010207, 0.0035);
 
     const camera = new THREE.PerspectiveCamera(45, canvasWidth / canvasHeight, 0.1, 1000);
-    camera.position.set(0, 24, 98);
+    // Posición para ver el disco horizontalmente con un poco de ángulo
+    camera.position.set(0, 18, 105);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(canvasWidth, canvasHeight);
     
-    // Clear old canvases if re-rendering
     if (mountRef.current.childElementCount > 0) {
       mountRef.current.innerHTML = '';
     }
     mountRef.current.appendChild(renderer.domElement);
 
-    // Textures
+    // Textura suave para partículas
     const createSoftParticleTexture = () => {
       const canvas = document.createElement('canvas');
       canvas.width = 64; canvas.height = 64;
       const ctx = canvas.getContext('2d');
       const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
       grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-      grad.addColorStop(0.18, 'rgba(255, 255, 255, 0.9)');
-      grad.addColorStop(0.45, 'rgba(255, 255, 255, 0.3)');
+      grad.addColorStop(0.2, 'rgba(255, 255, 255, 0.8)');
+      grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.2)');
       grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
       ctx.fillStyle = grad;
       ctx.beginPath();
       ctx.arc(32, 32, 32, 0, Math.PI * 2);
       ctx.fill();
-      const texture = new THREE.CanvasTexture(canvas);
-      texture.needsUpdate = true;
-      return texture;
+      return new THREE.CanvasTexture(canvas);
     };
-
-    const createHighGlowQuantumTexture = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = 128; canvas.height = 128;
-      const ctx = canvas.getContext('2d');
-      const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
-      grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-      grad.addColorStop(0.15, 'rgba(255, 255, 255, 1)');
-      grad.addColorStop(0.35, 'rgba(0, 243, 255, 0.95)');
-      grad.addColorStop(0.7, 'rgba(168, 85, 247, 0.45)');
-      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(64, 64, 64, 0, Math.PI * 2);
-      ctx.fill();
-      const texture = new THREE.CanvasTexture(canvas);
-      texture.needsUpdate = true;
-      return texture;
-    };
-
     const particleTexture = createSoftParticleTexture();
-    const quantumGlowTexture = createHighGlowQuantumTexture();
 
-    let innerColor = 0xc084fc;
-    let outerColor = 0x00f3ff;
-    if (etapa === 'Entrada') {
-      innerColor = 0x2563eb;
-      outerColor = 0x60a5fa;
-    } else if (etapa === 'Radiación') {
-      innerColor = 0xea580c;
-      outerColor = 0xfacc15;
-    } else if (etapa === 'Salida') {
-      innerColor = 0x16a34a; // green-600
-      outerColor = 0x4ade80; // green-400
-    }
+    // Colores dinámicos
+    let baseHue = 0.75; // Purple
+    if (etapa === 'Entrada') baseHue = 0.55; // Blue
+    else if (etapa === 'Radiación') baseHue = 0.05; // Orange/Red
+    else if (etapa === 'Salida') baseHue = 0.35; // Green
 
-    // 1. Singularidad y Halos
+    const innerColor = new THREE.Color().setHSL(baseHue, 0.9, 0.6);
+    const outerColor = new THREE.Color().setHSL(baseHue + 0.1, 0.9, 0.4);
+
+    // Luces
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+    scene.add(ambientLight);
+    const pointLight = new THREE.PointLight(innerColor, 500, 100);
+    scene.add(pointLight);
+
+    // 1. Singularidad Central
     const singularity = new THREE.Mesh(
-      new THREE.SphereGeometry(9.5, 64, 64),
+      new THREE.SphereGeometry(8.5, 64, 64),
       new THREE.MeshBasicMaterial({ color: 0x000000 })
     );
     scene.add(singularity);
 
-    scene.add(new THREE.Mesh(
-      new THREE.SphereGeometry(10.2, 64, 64),
-      new THREE.MeshBasicMaterial({ color: innerColor, transparent: true, opacity: 0.6, side: THREE.BackSide, blending: THREE.AdditiveBlending })
-    ));
-
-    scene.add(new THREE.Mesh(
-      new THREE.SphereGeometry(11.5, 64, 64),
-      new THREE.MeshBasicMaterial({ color: outerColor, transparent: true, opacity: 0.25, side: THREE.BackSide, blending: THREE.AdditiveBlending })
-    ));
-
-    scene.add(new THREE.Mesh(
-      new THREE.SphereGeometry(16.0, 64, 64),
-      new THREE.MeshBasicMaterial({ color: outerColor, transparent: true, opacity: 0.08, side: THREE.BackSide, blending: THREE.AdditiveBlending })
-    ));
-
-    // 2. Anillos Fotónicos (Gravitational Lensing Illusion)
-    const photonRing1 = new THREE.Mesh(
-      new THREE.RingGeometry(9.8, 12.0, 128),
-      new THREE.MeshBasicMaterial({ color: outerColor, side: THREE.DoubleSide, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending })
+    // Lente Gravitacional (Esfera refractiva que curva la luz trasera)
+    const gravitationalLens = new THREE.Mesh(
+      new THREE.SphereGeometry(10.5, 64, 64),
+      new THREE.MeshPhysicalMaterial({
+        color: 0xffffff,
+        transmission: 1.0, // Vidrio puro
+        opacity: 1,
+        metalness: 0,
+        roughness: 0,
+        ior: 2.5, // Índice de refracción alto para curvar la luz mucho
+        thickness: 5.0,
+        side: THREE.BackSide,
+      })
     );
-    photonRing1.rotation.x = Math.PI / 2;
-    scene.add(photonRing1);
+    scene.add(gravitationalLens);
 
-    const photonRing2 = new THREE.Mesh(
-      new THREE.RingGeometry(12.2, 14.5, 128),
-      new THREE.MeshBasicMaterial({ color: innerColor, side: THREE.DoubleSide, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending })
+    // Halos Brillantes (Atmosfera central)
+    const halo1 = new THREE.Mesh(
+      new THREE.SphereGeometry(10.8, 64, 64),
+      new THREE.MeshBasicMaterial({ color: innerColor, transparent: true, opacity: 0.5, side: THREE.BackSide, blending: THREE.AdditiveBlending })
     );
-    photonRing2.rotation.x = Math.PI / 2;
-    scene.add(photonRing2);
+    scene.add(halo1);
+    
+    const halo2 = new THREE.Mesh(
+      new THREE.SphereGeometry(14.0, 64, 64),
+      new THREE.MeshBasicMaterial({ color: outerColor, transparent: true, opacity: 0.15, side: THREE.BackSide, blending: THREE.AdditiveBlending })
+    );
+    scene.add(halo2);
 
-    // 2.5 Campo Gravitacional 360° (Estrellas / Partículas de Vacío)
-    const starCount = 3000;
-    const starGeo = new THREE.BufferGeometry();
-    const starPos = new Float32Array(starCount * 3);
-    for (let i = 0; i < starCount; i++) {
-        const r = 50 + Math.random() * 150;
-        const thetaStar = Math.random() * Math.PI * 2;
-        const phiStar = Math.acos(2 * Math.random() - 1);
-        starPos[i * 3] = r * Math.sin(phiStar) * Math.cos(thetaStar);
-        starPos[i * 3 + 1] = r * Math.sin(phiStar) * Math.sin(thetaStar);
-        starPos[i * 3 + 2] = r * Math.cos(phiStar);
-    }
-    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-    const starField = new THREE.Points(starGeo, new THREE.PointsMaterial({
-        size: 0.8, color: 0xffffff, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending
-    }));
-    scene.add(starField);
-
-    // 3. Disco de Acreción
-    const diskCount = 35000;
+    // 2. Disco de Acreción (Plano Ecuatorial)
+    const diskCount = 45000;
     const diskGeo = new THREE.BufferGeometry();
     const diskPos = new Float32Array(diskCount * 3);
     const diskColors = new Float32Array(diskCount * 3);
     const diskVelocities = [];
 
     for (let i = 0; i < diskCount; i++) {
-        const r = 11.0 + Math.random() * 58.0;
+        const r = 12.0 + Math.random() * 60.0;
         const thetaAngle = Math.random() * Math.PI * 2;
-        // Mayor grosor en el exterior, más fino cerca del horizonte
-        const thickness = (r - 10.5) * 0.15;
-        const yOffset = (Math.random() - 0.5) * thickness * (Math.random() > 0.5 ? 1 : -1);
+        // Grosor del disco aumenta con la distancia
+        const thickness = (r - 11.5) * 0.12;
+        const yOffset = (Math.random() - 0.5) * thickness;
 
         diskPos[i * 3] = r * Math.cos(thetaAngle);
         diskPos[i * 3 + 1] = yOffset;
         diskPos[i * 3 + 2] = r * Math.sin(thetaAngle);
 
-        const keplerSpeed = (0.42 / Math.sqrt(r)) * (1 + (phi / 360) * 0.5);
+        const keplerSpeed = (0.5 / Math.sqrt(r)) * (1 + (phi / 360) * 0.5);
         diskVelocities.push({ r, angle: thetaAngle, speed: keplerSpeed, yOriginal: yOffset });
 
-        const normR = (r - 11.0) / 58.0;
+        const normR = (r - 12.0) / 60.0;
         const color = new THREE.Color();
-        if (etapa === 'Entrada') {
-            color.setHSL(0.55 - normR * 0.05, 0.9, 0.7);
-        } else if (etapa === 'Radiación') {
-            color.setHSL(0.1 - normR * 0.1, 1.0, 0.65);
-        } else if (etapa === 'Salida') {
-            color.setHSL(0.35 + normR * 0.1, 0.9, 0.6);
-        } else {
-            if (normR < 0.22) color.setHSL(0.53 - normR * 0.08, 1.0, 0.88);
-            else if (normR < 0.62) color.setHSL(0.72 + normR * 0.06, 0.95, 0.68);
-            else color.setHSL(0.78, 0.9, 0.45);
-        }
+        color.setHSL(baseHue - normR * 0.15, 0.9, 0.8 - normR * 0.4);
         
         diskColors[i * 3] = color.r;
         diskColors[i * 3 + 1] = color.g;
@@ -183,119 +133,118 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
     diskGeo.setAttribute('position', new THREE.BufferAttribute(diskPos, 3));
     diskGeo.setAttribute('color', new THREE.BufferAttribute(diskColors, 3));
     const accretionDisc = new THREE.Points(diskGeo, new THREE.PointsMaterial({
-        size: 1.6, map: particleTexture, vertexColors: true, transparent: true,
-        opacity: 0.88, blending: THREE.AdditiveBlending, depthWrite: false
+        size: 1.2, map: particleTexture, vertexColors: true, transparent: true,
+        opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false
     }));
     scene.add(accretionDisc);
 
-    // 4. Haz fotónico (Qubits)
-    const qCount = 800;
-    const qGeo = new THREE.BufferGeometry();
-    const qPos = new Float32Array(qCount * 3);
-    const qColors = new Float32Array(qCount * 3);
-    const qData = [];
+    // 3. Jets Polares Relativistas
+    const jetCount = 10000;
+    const jetGeo = new THREE.BufferGeometry();
+    const jetPos = new Float32Array(jetCount * 3);
+    const jetColors = new Float32Array(jetCount * 3);
+    const jetData = [];
 
-    for (let i = 0; i < qCount; i++) {
-        const p = {};
-        if (etapa === "Entrada") {
-            p.x = -98 + Math.random() * 48;
-            p.y = (Math.random() - 0.5) * 22;
-            p.z = (Math.random() - 0.5) * 22;
-            p.vx = 0.7 + Math.random() * 0.85;
-            p.vy = (Math.random() - 0.5) * 0.12;
-            p.vz = (Math.random() - 0.5) * 0.12;
-            p.color = new THREE.Color(0xffffff);
-        } else if (etapa === "Distribución") {
-            p.r = 10.5 + Math.random() * 40;
-            p.angle = Math.random() * Math.PI * 2;
-            p.speed = 0.03 + Math.random() * 0.045;
-            p.x = p.r * Math.cos(p.angle);
-            p.y = (Math.random() - 0.5) * 5.0;
-            p.z = p.r * Math.sin(p.angle);
-            p.color = Math.random() > 0.5 ? new THREE.Color(0xffffff) : new THREE.Color(0x00f3ff);
-        } else if (etapa === "Radiación") {
-            p.x = (Math.random() - 0.5) * 6;
-            p.y = (Math.random() - 0.5) * 6;
-            p.z = (Math.random() - 0.5) * 6;
-            const dir = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize();
-            p.vx = dir.x * (0.6 + Math.random() * 0.9);
-            p.vy = dir.y * (0.6 + Math.random() * 0.9);
-            p.vz = dir.z * (0.6 + Math.random() * 0.9);
-            p.color = new THREE.Color(0xffaefc);
+    const jetActive = (etapa === 'Radiación' || etapa === 'Salida');
+
+    for (let i = 0; i < jetCount; i++) {
+        const isNorth = Math.random() > 0.5;
+        const r = Math.random() * 2.5; // Radio estrecho en la base
+        const angle = Math.random() * Math.PI * 2;
+        const y = (Math.random() * 80) * (isNorth ? 1 : -1);
+        
+        jetPos[i * 3] = r * Math.cos(angle);
+        jetPos[i * 3 + 1] = y;
+        jetPos[i * 3 + 2] = r * Math.sin(angle);
+
+        // Velocidad muy alta en Y
+        const speed = (0.5 + Math.random() * 2.0) * (isNorth ? 1 : -1);
+        jetData.push({ r, angle, y, speed, isNorth });
+
+        const color = new THREE.Color();
+        if (etapa === 'Salida') {
+          color.setHSL(0.35, 1.0, 0.7); // Green recovery
         } else {
-            p.x = (Math.random() - 0.5) * 4;
-            p.y = (Math.random() - 0.5) * 4;
-            p.z = (Math.random() - 0.5) * 4;
-            p.vx = 0.95 + Math.random() * 1.25;
-            p.vy = (Math.random() - 0.5) * 0.1;
-            p.vz = (Math.random() - 0.5) * 0.1;
-            p.color = new THREE.Color(0x5ff59e);
+          color.setHSL(0.05, 1.0, 0.6); // Orange/Red hawking radiation
         }
 
-        qPos[i * 3] = p.x; qPos[i * 3 + 1] = p.y; qPos[i * 3 + 2] = p.z;
-        qColors[i * 3] = p.color.r; qColors[i * 3 + 1] = p.color.g; qColors[i * 3 + 2] = p.color.b;
-        qData.push(p);
+        jetColors[i * 3] = color.r;
+        jetColors[i * 3 + 1] = color.g;
+        jetColors[i * 3 + 2] = color.b;
     }
-    qGeo.setAttribute('position', new THREE.BufferAttribute(qPos, 3));
-    qGeo.setAttribute('color', new THREE.BufferAttribute(qColors, 3));
-    const qParticlesMesh = new THREE.Points(qGeo, new THREE.PointsMaterial({
-        size: 4.8, map: quantumGlowTexture, vertexColors: true, transparent: true,
-        opacity: 1.0, blending: THREE.AdditiveBlending, depthWrite: false
+    jetGeo.setAttribute('position', new THREE.BufferAttribute(jetPos, 3));
+    jetGeo.setAttribute('color', new THREE.BufferAttribute(jetColors, 3));
+    const polarJets = new THREE.Points(jetGeo, new THREE.PointsMaterial({
+        size: 1.5, map: particleTexture, vertexColors: true, transparent: true,
+        opacity: jetActive ? 0.8 : 0.0, blending: THREE.AdditiveBlending, depthWrite: false
     }));
-    scene.add(qParticlesMesh);
+    scene.add(polarJets);
 
-    // Animation loop
+    // 4. Campo Estelar (Fondo 360)
+    const starCount = 4000;
+    const starGeo = new THREE.BufferGeometry();
+    const starPos = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+        const r = 80 + Math.random() * 200;
+        const thetaStar = Math.random() * Math.PI * 2;
+        const phiStar = Math.acos(2 * Math.random() - 1);
+        starPos[i * 3] = r * Math.sin(phiStar) * Math.cos(thetaStar);
+        starPos[i * 3 + 1] = r * Math.sin(phiStar) * Math.sin(thetaStar);
+        starPos[i * 3 + 2] = r * Math.cos(phiStar);
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    const starField = new THREE.Points(starGeo, new THREE.PointsMaterial({
+        size: 1.0, color: 0xaaccff, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false
+    }));
+    scene.add(starField);
+
+    // Animation loop (60 FPS optimized)
     let animationId;
     const animate = () => {
         animationId = requestAnimationFrame(animate);
-        const positions = accretionDisc.geometry.attributes.position.array;
         
-        // Disk rotation
+        // Rotar disco de acreción
+        const positions = accretionDisc.geometry.attributes.position.array;
         for (let i = 0; i < diskCount; i++) {
-            diskVelocities[i].angle += diskVelocities[i].speed * 0.05;
+            diskVelocities[i].angle -= diskVelocities[i].speed * 0.05;
             positions[i * 3] = diskVelocities[i].r * Math.cos(diskVelocities[i].angle);
             positions[i * 3 + 2] = diskVelocities[i].r * Math.sin(diskVelocities[i].angle);
+            
+            // Si es etapa de entrada, las partículas tienden a espiralar hacia adentro suavemente
+            if (etapa === 'Entrada') {
+                diskVelocities[i].r -= 0.01;
+                if (diskVelocities[i].r < 12) diskVelocities[i].r = 72.0;
+            }
         }
         accretionDisc.geometry.attributes.position.needsUpdate = true;
         
-        // Qubit beam logic based on Etapa
-        const qPositions = qParticlesMesh.geometry.attributes.position.array;
-        for (let i = 0; i < qCount; i++) {
-            const p = qData[i];
-            if (etapa === "Entrada") {
-                p.x += p.vx; p.y += p.vy; p.z += p.vz;
-                if (p.x > 0) {
-                    p.x = -98 + Math.random() * 10;
-                    p.y = (Math.random() - 0.5) * 22;
-                    p.z = (Math.random() - 0.5) * 22;
+        // Mover polar jets si están activos
+        if (jetActive) {
+            const jPositions = polarJets.geometry.attributes.position.array;
+            for (let i = 0; i < jetCount; i++) {
+                const jd = jetData[i];
+                jd.y += jd.speed;
+                // Si la partícula se aleja mucho, reiniciarla cerca del núcleo
+                if (Math.abs(jd.y) > 100) {
+                    jd.y = jd.isNorth ? 8 : -8; 
                 }
-            } else if (etapa === "Distribución") {
-                p.angle += p.speed;
-                p.x = p.r * Math.cos(p.angle);
-                p.z = p.r * Math.sin(p.angle);
-            } else if (etapa === "Radiación") {
-                p.x += p.vx; p.y += p.vy; p.z += p.vz;
-                if (Math.abs(p.x) > 60 || Math.abs(p.y) > 60 || Math.abs(p.z) > 60) {
-                    p.x = (Math.random() - 0.5) * 6;
-                    p.y = (Math.random() - 0.5) * 6;
-                    p.z = (Math.random() - 0.5) * 6;
-                }
-            } else {
-                p.x += p.vx; p.y += p.vy; p.z += p.vz;
-                if (p.x > 90) {
-                    p.x = (Math.random() - 0.5) * 4;
-                    p.y = (Math.random() - 0.5) * 4;
-                    p.z = (Math.random() - 0.5) * 4;
-                }
+                jPositions[i * 3 + 1] = jd.y;
+                // Pequeña expansión del radio mientras se aleja
+                const expansion = Math.abs(jd.y) * 0.05;
+                jPositions[i * 3] = (jd.r + expansion) * Math.cos(jd.angle);
+                jPositions[i * 3 + 2] = (jd.r + expansion) * Math.sin(jd.angle);
             }
-            qPositions[i * 3] = p.x; qPositions[i * 3 + 1] = p.y; qPositions[i * 3 + 2] = p.z;
+            polarJets.geometry.attributes.position.needsUpdate = true;
+            polarJets.material.opacity = Math.min(1.0, polarJets.material.opacity + 0.02);
+        } else {
+            polarJets.material.opacity = Math.max(0.0, polarJets.material.opacity - 0.05);
         }
-        qParticlesMesh.geometry.attributes.position.needsUpdate = true;
 
-        photonRing1.rotation.z -= 0.005;
-        photonRing2.rotation.z += 0.003;
+        // Rotación general sutil de la escena
         starField.rotation.y += 0.0005;
-        starField.rotation.x += 0.0002;
+        halo1.rotation.y -= 0.01;
+        halo2.rotation.y += 0.005;
+
         renderer.render(scene, camera);
     };
     animate();
@@ -305,20 +254,24 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
       if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement);
       }
+      // Dispose geometry/materials to prevent memory leaks
+      diskGeo.dispose();
+      jetGeo.dispose();
+      starGeo.dispose();
     };
   }, [etapa, theta, phi]);
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '770px', borderRadius: '28px', overflow: 'hidden', border: '1px solid rgba(168, 85, 247, 0.35)', background: 'radial-gradient(circle at 50% 50%, #0c0f26 0%, #010207 100%)', boxShadow: '0 35px 120px rgba(0,0,0,0.95), inset 0 0 90px rgba(168, 85, 247, 0.15)' }}>
+    <div style={{ position: 'relative', width: '100%', height: '770px', borderRadius: '28px', overflow: 'hidden', border: '1px solid rgba(168, 85, 247, 0.35)', background: 'radial-gradient(circle at 50% 50%, #080a1a 0%, #000000 100%)', boxShadow: '0 35px 120px rgba(0,0,0,0.95), inset 0 0 90px rgba(168, 85, 247, 0.15)' }}>
       <div ref={mountRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1 }} />
       <div style={{ position: 'absolute', inset: 0, zIndex: 10, pointerEvents: 'none', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '24px 28px' }}>
         
         {/* HUD Header */}
-        <div className="bento-glass-card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 24px', border: '1px solid rgba(255, 255, 255, 0.15)' }}>
+        <div className="bento-glass-card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 24px', border: '1px solid rgba(255, 255, 255, 0.15)', background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(10px)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#38bdf8', boxShadow: '0 0 14px #38bdf8, 0 0 28px #38bdf8' }} />
             <div>
-              <div style={{ fontSize: '1.15rem', fontWeight: 850, letterSpacing: '-0.025em', background: 'linear-gradient(90deg, #ffffff, #c084fc 45%, #38bdf8 85%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>MODELO DE PRESERVACIÓN DE INFORMACIÓN CUÁNTICA EN EL HORIZONTE DE SUCESOS</div>
+              <div style={{ fontSize: '1.15rem', fontWeight: 850, letterSpacing: '-0.025em', background: 'linear-gradient(90deg, #ffffff, #c084fc 45%, #38bdf8 85%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>SIMULACIÓN ASTROFÍSICA: LENTE GRAVITACIONAL Y JETS POLARES</div>
               <div style={{ fontSize: '0.76rem', color: '#94a3b8', marginTop: '2px', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Etapa activa: {etapa} &bull; {estadoSistema}</div>
             </div>
           </div>
@@ -334,12 +287,12 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
         {/* HUD Center Side Cards */}
         <div style={{ position: 'absolute', top: '52%', left: 0, width: '100%', transform: 'translateY(-50%)', display: 'flex', justifyContent: 'space-between', padding: '0 30px', pointerEvents: 'none' }}>
            <div style={{ background: 'rgba(6, 10, 26, 0.78)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255, 255, 255, 0.13)', borderRadius: '18px', padding: '16px 20px', maxWidth: '235px', boxShadow: '0 16px 40px rgba(0,0,0,0.65)' }}>
-             <strong style={{ color: '#38bdf8', display: 'block', fontSize: '0.85rem', marginBottom: '5px' }}>Estado Preparado (|Ψ_in⟩)</strong>
-             <p style={{ fontSize: '0.73rem', color: '#a1a1aa' }}>Haz fotónico localizado ingresando al horizonte gravitatorio.</p>
+             <strong style={{ color: '#38bdf8', display: 'block', fontSize: '0.85rem', marginBottom: '5px' }}>Plano Ecuatorial (Entrada)</strong>
+             <p style={{ fontSize: '0.73rem', color: '#a1a1aa' }}>Disco de acreción donde convergen los cúbits antes de cruzar el horizonte.</p>
            </div>
            <div style={{ background: 'rgba(6, 10, 26, 0.78)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255, 255, 255, 0.13)', borderRadius: '18px', padding: '16px 20px', maxWidth: '235px', boxShadow: '0 16px 40px rgba(0,0,0,0.65)' }}>
-             <strong style={{ color: '#e879f9', display: 'block', fontSize: '0.85rem', marginBottom: '5px' }}>Reconstrucción (|Ψ_out⟩)</strong>
-             <p style={{ fontSize: '0.73rem', color: '#a1a1aa' }}>Radiación de Hawking descodificada mediante circuito inverso.</p>
+             <strong style={{ color: '#4ade80', display: 'block', fontSize: '0.85rem', marginBottom: '5px' }}>Jets Polares (Salida)</strong>
+             <p style={{ fontSize: '0.73rem', color: '#a1a1aa' }}>Expulsión relativista vertical. La información escapa ilesa de la paradoja.</p>
            </div>
         </div>
       </div>
