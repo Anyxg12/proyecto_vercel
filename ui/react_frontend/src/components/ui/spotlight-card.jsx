@@ -7,6 +7,10 @@ const SpotlightCard = ({ children, className = "", color = "rgba(6, 182, 212, 0.
   const mouseY = useMotionValue(0);
   const [isHovered, setIsHovered] = useState(false);
 
+  // Springs para suavidad del tilt 3D
+  const rotateX = useSpring(useTransform(mouseY, [0, 500], [4, -4]), { stiffness: 150, damping: 20 });
+  const rotateY = useSpring(useTransform(mouseX, [0, 500], [-4, 4]), { stiffness: 150, damping: 20 });
+
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
     const { left, top, width, height } = cardRef.current.getBoundingClientRect();
@@ -16,16 +20,24 @@ const SpotlightCard = ({ children, className = "", color = "rgba(6, 182, 212, 0.
     mouseY.set(y);
   };
 
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    mouseX.set(250); // center
+    mouseY.set(250); // center
+  };
+
   return (
-    <div
+    <motion.div
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className={`relative overflow-hidden rounded-2xl bg-black/40 border border-white/10 ${className}`}
+      onMouseLeave={handleMouseLeave}
       style={{
-        backdropFilter: "blur(20px)",
+        rotateX: isHovered ? rotateX : 0,
+        rotateY: isHovered ? rotateY : 0,
+        transformStyle: "preserve-3d",
       }}
+      className={`relative overflow-hidden rounded-2xl bg-slate-950/50 backdrop-blur-xl border border-white/10 shadow-2xl transition-all duration-300 ${className}`}
     >
       {/* Efecto Spotlight interno */}
       <motion.div
@@ -34,7 +46,7 @@ const SpotlightCard = ({ children, className = "", color = "rgba(6, 182, 212, 0.
         style={{
           background: useTransform(
             [mouseX, mouseY],
-            ([x, y]) => `radial-gradient(400px circle at ${x}px ${y}px, ${color}, transparent 80%)`
+            ([x, y]) => `radial-gradient(600px circle at ${x}px ${y}px, ${color}, transparent 60%)`
           )
         }}
       />
@@ -42,7 +54,7 @@ const SpotlightCard = ({ children, className = "", color = "rgba(6, 182, 212, 0.
       <div className="relative z-10 h-full w-full">
         {children}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

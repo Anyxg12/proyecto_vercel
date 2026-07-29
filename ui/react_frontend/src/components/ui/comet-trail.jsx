@@ -1,107 +1,68 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
 const CometTrail = () => {
-  const canvasRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+  
+  // Springs para suavizar el seguimiento (efecto "cometa" o "fantasma")
+  const springConfig = { damping: 25, stiffness: 120, mass: 0.5 };
+  const smoothX = useSpring(cursorX, springConfig);
+  const smoothY = useSpring(cursorY, springConfig);
+
+  // Springs más lentos para el halo externo (estela secundaria)
+  const springConfigSlow = { damping: 40, stiffness: 80, mass: 1 };
+  const slowX = useSpring(cursorX, springConfigSlow);
+  const slowY = useSpring(cursorY, springConfigSlow);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    let animationFrameId;
-
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-
-    const mouse = { x: width / 2, y: height / 2 };
-    const trail = [];
-    const maxTrailLength = 45;
-
-    const resize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
+    const moveCursor = (e) => {
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
+      if (!isVisible) setIsVisible(true);
     };
 
-    const handleMouseMove = (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    };
+    const handleMouseLeave = () => setIsVisible(false);
+    const handleMouseEnter = () => setIsVisible(true);
 
-    window.addEventListener('resize', resize);
-    window.addEventListener('mousemove', handleMouseMove);
-
-    const render = () => {
-      // Usamos composite operation para crear un desvanecimiento en lugar de clearRect
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-      ctx.fillRect(0, 0, width, height);
-      
-      ctx.globalCompositeOperation = 'source-over';
-
-      trail.push({ x: mouse.x, y: mouse.y });
-      if (trail.length > maxTrailLength) {
-        trail.shift();
-      }
-
-      if (trail.length > 1) {
-        ctx.lineJoin = 'round';
-        ctx.lineCap = 'round';
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = '#06b6d4';
-        ctx.strokeStyle = '#06b6d4';
-
-        ctx.beginPath();
-        ctx.moveTo(trail[0].x, trail[0].y);
-
-        for (let i = 1; i < trail.length; i++) {
-          const pt = trail[i];
-          const prevPt = trail[i - 1];
-          const xc = (prevPt.x + pt.x) / 2;
-          const yc = (prevPt.y + pt.y) / 2;
-          ctx.quadraticCurveTo(prevPt.x, prevPt.y, xc, yc);
-        }
-        ctx.lineTo(trail[trail.length - 1].x, trail[trail.length - 1].y);
-        
-        ctx.lineWidth = 4;
-        ctx.stroke();
-        
-        // Brillo blanco en la cabeza del cometa
-        ctx.beginPath();
-        const head = trail[trail.length - 1];
-        ctx.arc(head.x, head.y, 3, 0, Math.PI * 2);
-        ctx.fillStyle = '#ffffff';
-        ctx.shadowBlur = 30;
-        ctx.shadowColor = '#a855f7';
-        ctx.fill();
-      }
-
-      animationFrameId = requestAnimationFrame(render);
-    };
-
-    render();
+    window.addEventListener("mousemove", moveCursor);
+    document.body.addEventListener("mouseleave", handleMouseLeave);
+    document.body.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
-      window.removeEventListener('resize', resize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("mousemove", moveCursor);
+      document.body.removeEventListener("mouseleave", handleMouseLeave);
+      document.body.removeEventListener("mouseenter", handleMouseEnter);
     };
-  }, []);
+  }, [cursorX, cursorY, isVisible]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        pointerEvents: 'none',
-        zIndex: 9999,
-      }}
-    />
+    <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 9999, overflow: "hidden" }}>
+      {/* Halo secundario (Estela lenta) */}
+      <motion.div
+        style={{
+          x: slowX,
+          y: slowY,
+          translateX: "-50%",
+          translateY: "-50%",
+          opacity: isVisible ? 1 : 0,
+        }}
+        className="fixed top-0 left-0 w-12 h-12 rounded-full border border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-opacity duration-300"
+      />
+      
+      {/* Núcleo principal (Punto rápido brillante) */}
+      <motion.div
+        style={{
+          x: smoothX,
+          y: smoothY,
+          translateX: "-50%",
+          translateY: "-50%",
+          opacity: isVisible ? 1 : 0,
+        }}
+        className="fixed top-0 left-0 w-3 h-3 rounded-full bg-white shadow-[0_0_10px_#fff,0_0_20px_#a855f7,0_0_40px_#a855f7] transition-opacity duration-300"
+      />
+    </div>
   );
 };
 

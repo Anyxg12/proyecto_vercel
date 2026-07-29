@@ -13,8 +13,8 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
     else currentSystemState = "Reconstrucción Coherente (|Ψ_out⟩)";
     setEstadoSistema(currentSystemState);
 
-    const canvasWidth = mountRef.current.clientWidth;
-    const canvasHeight = mountRef.current.clientHeight;
+    let canvasWidth = mountRef.current.clientWidth || 300;
+    let canvasHeight = mountRef.current.clientHeight || 300;
 
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x010207, 0.0035);
@@ -31,6 +31,20 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
       mountRef.current.innerHTML = '';
     }
     mountRef.current.appendChild(renderer.domElement);
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        if (entry.target === mountRef.current) {
+          const { width, height } = entry.contentRect;
+          if (width > 0 && height > 0) {
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+          }
+        }
+      }
+    });
+    resizeObserver.observe(mountRef.current);
 
     // Textura suave para partículas
     const createSoftParticleTexture = () => {
@@ -340,6 +354,7 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
 
     return () => {
       cancelAnimationFrame(animationId);
+      resizeObserver.disconnect();
       if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement);
       }
