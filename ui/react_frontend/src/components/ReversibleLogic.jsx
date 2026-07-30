@@ -79,6 +79,64 @@ const ReversibleLogic = ({ logicData, control, setControl, target, setTarget }) 
             </div>
           </div>
         </div>
+
+        {/* Aplicación Inversa */}
+        <div className="mt-8 pt-10 border-t border-cyan-500/20 relative z-10">
+          <AnimatedTitle text="Aplicación Inversa" type="word" className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-8 flex justify-center uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,243,255,0.5)] w-full" />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center mb-6">
+            <div className="flex flex-col gap-4">
+              <div className="bg-cyan-950/20 p-4 rounded-xl border border-cyan-500/40 flex justify-between items-center relative overflow-hidden opacity-80">
+                <div className="absolute top-0 left-0 w-1 h-full bg-cyan-400"></div>
+                <span className="text-xs text-cyan-400 uppercase tracking-widest pl-2">Entrada (Control)</span>
+                <span className="text-2xl font-mono font-bold text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{logicData?.controlOut ?? '-'}</span>
+              </div>
+              <div className="bg-purple-950/20 p-4 rounded-xl border border-purple-500/40 flex justify-between items-center relative overflow-hidden opacity-80">
+                <div className="absolute top-0 left-0 w-1 h-full bg-purple-400"></div>
+                <span className="text-xs text-purple-400 uppercase tracking-widest pl-2">Entrada (Objetivo)</span>
+                <span className="text-2xl font-mono font-bold text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{logicData?.targetOut ?? '-'}</span>
+              </div>
+            </div>
+
+            <div className="flex justify-center relative w-full h-full min-h-[160px] items-center">
+              {/* Bit Entrante Control (Inverso) */}
+              <motion.div
+                animate={{ x: [ -80, 0, 0, 80 ], opacity: [ 0, 1, 1, 0 ], scale: [0.5, 1, 1, 1] }}
+                transition={{ repeat: Infinity, duration: 3, times: [0, 0.3, 0.7, 1] }}
+                className="absolute left-[-20px] top-4 w-6 h-6 bg-cyan-400 rounded-full shadow-[0_0_10px_rgba(34,211,238,1)] z-0"
+              />
+              {/* Bit Entrante Objetivo (Inverso) */}
+              <motion.div
+                animate={{ x: [ -80, 0, 0, 80 ], opacity: [ 0, 1, 1, 0 ], scale: [0.5, 1, 1, 1] }}
+                transition={{ repeat: Infinity, duration: 3, times: [0, 0.3, 0.7, 1] }}
+                className="absolute left-[-20px] bottom-4 w-6 h-6 bg-purple-400 rounded-full shadow-[0_0_10px_rgba(168,85,247,1)] z-0"
+              />
+
+              <motion.div 
+                animate={{ boxShadow: ['0 0 20px rgba(34,211,238,0.4)', '0 0 40px rgba(34,211,238,0.8)', '0 0 20px rgba(34,211,238,0.4)'], scale: [1, 1.05, 1] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+                className="w-36 h-36 bg-[#020a0a] rounded-full flex flex-col items-center justify-center border-2 border-cyan-400 z-10"
+              >
+                <div className="absolute inset-2 border-2 border-cyan-500/50 rounded-full border-dashed animate-[spin_8s_linear_infinite_reverse]"></div>
+                <div className="absolute inset-[-10px] border border-cyan-500/20 rounded-full border-dotted animate-[spin_12s_linear_infinite]"></div>
+                <span className="text-xl font-black text-cyan-400 drop-shadow-[0_0_15px_rgba(0,243,255,1)] tracking-widest text-center leading-tight mt-1">CNOT<br/>OTRA VEZ</span>
+              </motion.div>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <div className="bg-cyan-950/40 p-4 rounded-xl border border-cyan-400 flex justify-between items-center relative overflow-hidden shadow-[0_0_20px_rgba(34,211,238,0.3)]">
+                <div className="absolute top-0 left-0 w-2 h-full bg-cyan-400 shadow-[0_0_10px_#22d3ee]"></div>
+                <span className="text-xs text-cyan-300 uppercase tracking-widest pl-3 font-bold">Estado Recuperado</span>
+                <span className="text-2xl font-mono font-bold text-cyan-200 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">{control}</span>
+              </div>
+              <div className="bg-purple-950/40 p-4 rounded-xl border border-purple-400 flex justify-between items-center relative overflow-hidden shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+                <div className="absolute top-0 left-0 w-2 h-full bg-purple-400 shadow-[0_0_10px_#a855f7]"></div>
+                <span className="text-xs text-purple-300 uppercase tracking-widest pl-3 font-bold">Estado Recuperado</span>
+                <span className="text-2xl font-mono font-bold text-purple-200 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]">{target}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </SpotlightCard>
 
       {/* Teoría y Ejemplo Práctico */}
