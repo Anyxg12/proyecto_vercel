@@ -386,7 +386,7 @@ const BlackHoleCanvas = ({ etapa, theta, phi, entropia, pureza, fidelidad }) => 
              <MetricPill label="Ángulos θ, φ" val={`${theta}°, ${phi}°`} valColor="#38bdf8" />
              <MetricPill label="Entropía" val={entropia.toFixed(4)} valColor="#c084fc" />
              <MetricPill label="Pureza" val={pureza.toFixed(4)} valColor="#38bdf8" />
-             <MetricPill label="Fidelidad" val={`${fidelidad.toFixed(2)}%`} valColor="#4ade80" />
+             <MetricPill label="Fidelidad" val={`${(fidelidad * 100).toFixed(2)}%`} valColor="#4ade80" />
           </div>
         </div>
 
