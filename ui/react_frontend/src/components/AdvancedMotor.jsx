@@ -18,6 +18,18 @@ const itemVariants = {
 
 const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
   const [userPhase, setUserPhase] = useState('Distribución');
+  const getPhaseData = (phase) => {
+    if (!quantumData) return { entropia: 0, pureza: 1 };
+    switch (phase) {
+      case 'Entrada': return quantumData.entrada;
+      case 'Distribución': return quantumData.distribucion;
+      case 'Radiación': return quantumData.radiacion;
+      case 'Salida': return quantumData.salida;
+      default: return quantumData.entrada;
+    }
+  };
+  const currentPhaseData = getPhaseData(userPhase);
+
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="show" className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6 items-start">
       
@@ -123,8 +135,8 @@ const AdvancedMotor = ({ theta, setTheta, phi, setPhi, quantumData }) => {
             etapa={userPhase} 
             theta={theta} 
             phi={phi} 
-            entropia={quantumData?.distribucion?.entropia ?? 0.6931} 
-            pureza={quantumData?.distribucion?.pureza ?? 0.5} 
+            entropia={currentPhaseData?.entropia ?? 0.0} 
+            pureza={currentPhaseData?.pureza ?? 1.0} 
             fidelidad={quantumData?.fidelidad ?? 1.0} 
           />
         </motion.div>
